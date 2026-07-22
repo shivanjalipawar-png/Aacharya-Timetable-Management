@@ -1,5 +1,6 @@
 package com.aacharya.timetablemanagement.entity;
 
+import com.aacharya.timetablemanagement.entity.Batch;
 import jakarta.persistence.*;
 
 @Entity

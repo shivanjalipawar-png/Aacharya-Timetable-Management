@@ -3,7 +3,10 @@ package com.aacharya.timetablemanagement.controller;
 import com.aacharya.timetablemanagement.entity.Teacher;
 import com.aacharya.timetablemanagement.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -13,27 +16,53 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
+
     @PostMapping
-    public Teacher saveTeacher(@RequestBody Teacher teacher) {
-        return teacherService.saveTeacher(teacher);
+    public ResponseEntity<Teacher> saveTeacher(@RequestBody Teacher teacher) {
+
+        Teacher savedTeacher = teacherService.saveTeacher(teacher);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(savedTeacher);
     }
+
+
     @GetMapping
-    public List<Teacher> getAllTeachers() {
-        return teacherService.getAllTeachers();
+    public ResponseEntity<List<Teacher>> getAllTeachers() {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(teacherService.getAllTeachers());
     }
+
+
     @GetMapping("/{id}")
-    public Teacher getTeacherById(@PathVariable Long id) {
-        return teacherService.getTeacherById(id);
+    public ResponseEntity<Teacher> getTeacherById(@PathVariable Long id) {
+
+        Teacher teacher = teacherService.getTeacherById(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(teacher);
     }
+
+
     @PutMapping("/{id}")
-    public Teacher updateTeacher(@PathVariable Long id,
-                                 @RequestBody Teacher updatedTeacher) {
+    public ResponseEntity<Teacher> updateTeacher(
+            @PathVariable Long id,
+            @RequestBody Teacher updatedTeacher) {
 
-        return teacherService.updateTeacher(id, updatedTeacher);
+        Teacher teacher = teacherService.updateTeacher(id, updatedTeacher);
 
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(teacher);
     }
+
+
     @DeleteMapping("/{id}")
-    public void deleteTeacher(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTeacher(@PathVariable Long id) {
+
         teacherService.deleteTeacher(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }

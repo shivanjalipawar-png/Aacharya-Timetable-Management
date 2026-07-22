@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.aacharya.timetablemanagement.service.SubjectService;
 import com.aacharya.timetablemanagement.entity.Subject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @RestController
@@ -14,24 +16,45 @@ public class SubjectController {
     private  SubjectService subjectService;
 
 @PostMapping
-    public Subject saveSubject(@RequestBody Subject subject){
-    return subjectService.save(subject);
+public ResponseEntity<Subject> saveSubject(@RequestBody Subject subject){
+
+    Subject savedSubject = subjectService.save(subject);
+
+
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body(savedSubject);
 }
+
 
 @GetMapping
     public List<Subject> getAllSubject() {
     return subjectService.getAllSubjects();
 }
+
 @GetMapping("/{id}")
-    public Subject getSubjectById(@PathVariable Long id){
-    return subjectService.getSubjectById(id);
+    public ResponseEntity<Subject>getSubjectById(@PathVariable Long id){
+    Subject subject = subjectService.getSubjectById(id);
+
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(subject);
 }
-@PutMapping("/{id}")
-    public Subject updateSubject(@PathVariable Long id, @RequestBody Subject updateSubject){
-    return subjectService.updateSubject(id,updateSubject);
-}
-@DeleteMapping("/{id}")
-    public  void deleteSubject (@PathVariable Long id){
-    subjectService.deleteSubject(id);
-}
+    @PutMapping("/{id}")
+    public ResponseEntity<Subject> updateSubject(@PathVariable Long id,
+                                                 @RequestBody Subject updateSubject){
+
+        Subject subject = subjectService.updateSubject(id, updateSubject);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(subject);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSubject(@PathVariable Long id){
+
+        subjectService.deleteSubject(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
 }

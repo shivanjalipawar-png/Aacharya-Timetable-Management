@@ -1,6 +1,7 @@
 package com.aacharya.timetablemanagement.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Batch {
@@ -9,6 +10,7 @@ public class Batch {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long batchId;
 
+    @NotBlank(message = "Batch name cannot be empty")
     private String batchName;
 
     public Long getBatchId() {

@@ -1,7 +1,7 @@
 package com.aacharya.timetablemanagement.service;
 import com.aacharya.timetablemanagement.entity.Subject;
 import com.aacharya.timetablemanagement.entity.Teacher;
-
+import com.aacharya.timetablemanagement.exception.ResourceNotFoundException;
 import com.aacharya.timetablemanagement.repository.SubjectRepository;
 import com.aacharya.timetablemanagement.repository.TeacherRepository;
 
@@ -27,7 +27,7 @@ public class SubjectService {
         Teacher teacher = teacherRepository.findById(teacherId).orElse(null);
 
         if (teacher == null) {
-            return null;
+            throw new ResourceNotFoundException("Teacher not found with id: " + teacherId);
         }
 
         subject.setTeacher(teacher);
@@ -35,8 +35,14 @@ public class SubjectService {
         return subjectRepository.save(subject);
     }
     public Subject getSubjectById(Long id) {
-        return subjectRepository.findById(id).orElse(null);
 
+        Subject subject = subjectRepository.findById(id).orElse(null);
+
+        if (subject == null) {
+            throw new ResourceNotFoundException("Subject not found with id: " + id);
+        }
+
+        return subject;
     }
 
     public List<Subject> getAllSubjects() {
@@ -47,23 +53,24 @@ public class SubjectService {
 
         Subject subject = subjectRepository.findById(subjectId).orElse(null);
 
-        if (subject != null) {
+        if(subject == null){
+            throw new ResourceNotFoundException("Subject not found with id: " + subjectId);
+        }
+        Long teacherId = updateSubject.getTeacher().getTeacherId();
 
-            Long teacherId = updateSubject.getTeacher().getTeacherId();
-
-            Teacher teacher = teacherRepository.findById(teacherId).orElse(null);
+        Teacher teacher = teacherRepository.findById(teacherId).orElse(null);
 
             if (teacher == null) {
-                return null;
+                throw new ResourceNotFoundException("Teacher not found with id: " + teacherId);
             }
 
             subject.setSubjectName(updateSubject.getSubjectName());
             subject.setTeacher(teacher);
 
             return subjectRepository.save(subject);
-        }
 
-        return null;
+
+        //return null;
     }
 
 public void deleteSubject(Long id)
