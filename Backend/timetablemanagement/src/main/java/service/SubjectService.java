@@ -9,13 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 @Service
 public class SubjectService {
     @Autowired
     private SubjectRepository subjectRepository;
-
+    private static final Logger logger =
+            LoggerFactory.getLogger(SubjectService.class);
     @Autowired
     private TeacherRepository teacherRepository;
 
@@ -32,21 +36,36 @@ public class SubjectService {
 
         subject.setTeacher(teacher);
 
-        return subjectRepository.save(subject);
+        logger.info("Saving subject: {}", subject.getSubjectName());
+
+        Subject savedSubject = subjectRepository.save(subject);
+
+        logger.info("Subject created successfully: {}", savedSubject.getSubjectName());
+
+        return savedSubject;
     }
     public Subject getSubjectById(Long id) {
-
+        logger.info("Fetching subject with id: {}", id);
         Subject subject = subjectRepository.findById(id).orElse(null);
 
         if (subject == null) {
             throw new ResourceNotFoundException("Subject not found with id: " + id);
         }
 
+        logger.info("Retrieved subject: {}", subject.getSubjectName());
+
         return subject;
     }
 
     public List<Subject> getAllSubjects() {
-        return subjectRepository.findAll();
+
+        logger.info("Fetching all subjects");
+
+        List<Subject> subjects = subjectRepository.findAll();
+
+        logger.info("Retrieved {} subjects", subjects.size());
+
+        return subjects;
     }
 
     public Subject updateSubject(Long subjectId, Subject updateSubject) {
@@ -66,16 +85,33 @@ public class SubjectService {
 
             subject.setSubjectName(updateSubject.getSubjectName());
             subject.setTeacher(teacher);
+        logger.info("Updating subject: {}", subject.getSubjectName());
 
-            return subjectRepository.save(subject);
+
+        Subject updatedSubject = subjectRepository.save(subject);
+
+        logger.info("Subject updated successfully: {}", updatedSubject.getSubjectName());
 
 
-        //return null;
+        return updatedSubject;
+
+
+           //return subjectRepository.findById(Long id);
+
+
+
     }
 
 public void deleteSubject(Long id)
 {
-         subjectRepository.deleteById(id);
+    Subject subject = subjectRepository.findById(id).orElse(null);
+    if(subject == null){
+        throw new ResourceNotFoundException("Subject not found with id: " + id);
+    }
+    logger.info("Deleting subject: {}", subject.getSubjectName());
+    subjectRepository.delete(subject);
+    logger.info("Subject deleted successfully: {}", subject.getSubjectName());
+
 
 }
 

@@ -1,20 +1,33 @@
 package com.aacharya.timetablemanagement.service;
 
+//import com.aacharya.timetablemanagement.controller.BatchController;
 import com.aacharya.timetablemanagement.entity.Batch;
 import com.aacharya.timetablemanagement.repository.BatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.aacharya.timetablemanagement.exception.ResourceNotFoundException;
 import  java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Service
 public class BatchService {
 
     @Autowired
     private BatchRepository batchRepository;
+    private static final Logger logger =
+            LoggerFactory.getLogger(BatchService.class);
 
     public Batch saveBatch(Batch batch) {
-        return batchRepository.save(batch);
+
+        logger.info("Saving batch: {}", batch.getBatchName());
+
+        Batch savedBatch = batchRepository.save(batch);
+
+        logger.info("Batch created successfully: {}", savedBatch.getBatchName());
+
+        return savedBatch;
     }
 
     public List<Batch> getAllBatches() {

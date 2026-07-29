@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Tag(
         name = "Batch Management",
         description = "APIs for managing batches"
@@ -24,6 +27,8 @@ public class BatchController {
 
     @Autowired
     private BatchService batchService;
+    private static final Logger logger =
+            LoggerFactory.getLogger(BatchController.class);
 
     @Operation(
             summary = "Create a new batch",
@@ -37,6 +42,7 @@ public class BatchController {
     public ResponseEntity<Batch> saveBatch(@Valid @RequestBody Batch batch) {
 
         Batch savedBatch = batchService.saveBatch(batch);
+        logger.info("Batch created successfully: {}", savedBatch.getBatchName());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedBatch);
