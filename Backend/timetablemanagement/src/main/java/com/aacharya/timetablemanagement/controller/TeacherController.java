@@ -1,12 +1,18 @@
 package com.aacharya.timetablemanagement.controller;
 
-import com.aacharya.timetablemanagement.entity.Teacher;
 import com.aacharya.timetablemanagement.service.TeacherService;
+import com.aacharya.timetablemanagement.dto.TeacherRequestDTO;
+import com.aacharya.timetablemanagement.dto.TeacherResponseDTO;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,6 +30,7 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
+
     @Operation(
             summary = "Create a new teacher",
             description = "Creates a new teacher and stores it in the system."
@@ -32,29 +39,31 @@ public class TeacherController {
             @ApiResponse(responseCode = "201", description = "Teacher created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid Teacher data")
     })
-
     @PostMapping
-    public ResponseEntity<Teacher> saveTeacher(@RequestBody Teacher teacher) {
+    public ResponseEntity<TeacherResponseDTO> saveTeacher(
+            @Valid @RequestBody TeacherRequestDTO requestDTO) {
 
-        Teacher savedTeacher = teacherService.saveTeacher(teacher);
+        TeacherResponseDTO response = teacherService.saveTeacher(requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(savedTeacher);
+                .body(response);
     }
 
+
     @Operation(
-            summary = "Get all teachers  data.",
+            summary = "Get all teachers",
             description = "Returns the complete list of teachers available in the system."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "All teachers  retrieved successfully"),
+            @ApiResponse(responseCode = "200", description = "All teachers retrieved successfully")
     })
-
     @GetMapping
-    public ResponseEntity<List<Teacher>> getAllTeachers() {
+    public ResponseEntity<List<TeacherResponseDTO>> getAllTeachers() {
+
+        List<TeacherResponseDTO> teachers = teacherService.getAllTeachers();
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(teacherService.getAllTeachers());
+                .body(teachers);
     }
 
 
@@ -62,16 +71,15 @@ public class TeacherController {
             summary = "Get teacher by ID",
             description = "Returns the teacher corresponding to the specified teacher ID."
     )
-
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Teacher retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Teacher not found for the specified ID.")
     })
-
     @GetMapping("/{id}")
-    public ResponseEntity<Teacher> getTeacherById(@PathVariable Long id) {
+    public ResponseEntity<TeacherResponseDTO> getTeacherById(
+            @PathVariable Long id) {
 
-        Teacher teacher = teacherService.getTeacherById(id);
+        TeacherResponseDTO teacher = teacherService.getTeacherById(id);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(teacher);
@@ -83,39 +91,40 @@ public class TeacherController {
             description = "Updates the teacher corresponding to the specified teacher ID."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Teacher updated successfully."),
-            @ApiResponse(responseCode = "404", description = "Teacher  not found for the specified ID."),
-            @ApiResponse(responseCode = "400", description = "Invalid teacher data. ")
+            @ApiResponse(responseCode = "200", description = "Teacher updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Teacher not found for the specified ID"),
+            @ApiResponse(responseCode = "400", description = "Invalid teacher data")
     })
-
     @PutMapping("/{id}")
-    public ResponseEntity<Teacher> updateTeacher(
+    public ResponseEntity<TeacherResponseDTO> updateTeacher(
             @PathVariable Long id,
-            @RequestBody Teacher updatedTeacher) {
+            @Valid @RequestBody TeacherRequestDTO requestDTO) {
 
-        Teacher teacher = teacherService.updateTeacher(id, updatedTeacher);
+        TeacherResponseDTO response =
+                teacherService.updateTeacher(id, requestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(teacher);
+                .body(response);
     }
+
 
     @Operation(
             summary = "Delete teacher by ID",
             description = "Deletes the teacher corresponding to the specified teacher ID."
     )
-
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Teacher deleted successfully."
+                    description = "Teacher deleted successfully"
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Teacher not found for the specified ID."
+                    description = "Teacher not found for the specified ID"
             )
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeacher(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTeacher(
+            @PathVariable Long id) {
 
         teacherService.deleteTeacher(id);
 
