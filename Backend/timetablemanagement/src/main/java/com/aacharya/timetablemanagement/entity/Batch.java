@@ -20,11 +20,30 @@ public class Batch {
     @NotBlank(message = "Batch name cannot be empty")
     private String batchName;
 
-    //public Long getBatchId() {return batchId;}
+    @NotBlank(message = "Course name cannot be empty")
+   private String course;
 
- //   public void setBatchId(Long batchId) {this.batchId = batchId;}
+    public String getCourse() {
+        return course;
+    }
 
-    //public String getBatchName() {return batchName;}
+    public void setCourse(String course) {
+        this.course = course;
+    }
 
-   // public void setBatchName(String batchName) {this.batchName = batchName;}
+    public Long getBatchId() {
+        return batchId;
+    }
+
+  public void setBatchId(Long batchId) {
+        this.batchId = batchId;
+    }
+
+    public String getBatchName() {
+        return batchName;
+    }
+
+    public void setBatchName(String batchName) {
+        this.batchName = batchName;
+    }
 }

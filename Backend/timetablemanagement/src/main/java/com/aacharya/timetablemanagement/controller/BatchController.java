@@ -1,6 +1,11 @@
 package com.aacharya.timetablemanagement.controller;
 
+import com.aacharya.timetablemanagement.dto.BatchRequestDTO;
+import com.aacharya.timetablemanagement.dto.BatchResponseDTO;
+import com.aacharya.timetablemanagement.dto.SubjectRequestDTO;
+import com.aacharya.timetablemanagement.dto.SubjectResponseDTO;
 import com.aacharya.timetablemanagement.entity.Batch;
+import com.aacharya.timetablemanagement.repository.BatchRepository;
 import com.aacharya.timetablemanagement.service.BatchService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +44,15 @@ public class BatchController {
             @ApiResponse(responseCode = "400", description = "Invalid batch data")
     })
     @PostMapping
-    public ResponseEntity<Batch> saveBatch(@Valid @RequestBody Batch batch) {
+    public ResponseEntity<BatchResponseDTO> saveBatch(@Valid @RequestBody BatchRequestDTO requestDTO) {
 
-        Batch savedBatch = batchService.saveBatch(batch);
-        logger.info("Batch created successfully: {}", savedBatch.getBatchName());
+        BatchResponseDTO response = batchService.saveBatch(requestDTO);
+
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(savedBatch);
+                .body(response);
     }
+
     @Operation(
             summary = "Get all batches",
             description = "Returns the complete list of batches available in the system."
@@ -55,8 +61,13 @@ public class BatchController {
             @ApiResponse(responseCode = "200", description = "All batches retrieved successfully"),
     })
     @GetMapping
-    public List<Batch> getAllBatches() {
-        return batchService.getAllBatches();
+    public ResponseEntity<List<BatchResponseDTO>> getAllBatches() {
+
+        List<BatchResponseDTO> batches =
+                batchService.getAllBatches();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(batches);
+
     }
 
 
@@ -70,8 +81,12 @@ public class BatchController {
             @ApiResponse(responseCode = "404", description = "Batch not found for the specified ID.")
     })
     @GetMapping("/{id}")
-    public Batch getBatchById(@PathVariable Long id) {
-        return batchService.getBatchById(id);
+    public ResponseEntity<BatchResponseDTO> getBatchById(@PathVariable Long id) {
+
+        BatchResponseDTO response = batchService.getBatchById(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(response);
     }
 
 
@@ -85,10 +100,13 @@ public class BatchController {
             @ApiResponse(responseCode = "400", description = "Invalid batch data. ")
     })
     @PutMapping("/{id}")
-    public Batch updateBatch(@PathVariable Long id,
-                             @RequestBody Batch updatedBatch) {
+    public ResponseEntity<BatchResponseDTO> updateBatch(@PathVariable Long id,
+                                                        @RequestBody BatchRequestDTO requestDTO) {
 
-        return batchService.updateBatch(id, updatedBatch);
+        BatchResponseDTO updatedBatch = batchService.updateBatch(id, requestDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedBatch);
     }
 
 
@@ -97,11 +115,15 @@ public class BatchController {
             description = "Deletes the batch corresponding to the specified batch ID."
     )
     @ApiResponse(
-            responseCode="200",
-            description="Batch deleted successfully."
+            responseCode = "200",
+            description = "Batch deleted successfully."
     )
     @DeleteMapping("/{id}")
-    public void deleteBatch(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBatch(@PathVariable Long id) {
+
         batchService.deleteBatch(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }

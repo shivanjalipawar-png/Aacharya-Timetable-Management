@@ -107,13 +107,15 @@ public class SubjectService {
 
         List<Subject> subjects = subjectRepository.findAll();
         List<SubjectResponseDTO> responseList= new ArrayList<>();
+
         for(Subject subject:subjects){
+
             SubjectResponseDTO response= new SubjectResponseDTO();
             response.setSubjectName(subject.getSubjectName());
             response.setSubjectCode(subject.getSubjectCode());
             response.setCredits(subject.getCredits());
             response.setSubjectId(subject.getSubjectId());
-           // response.setBatchName(subject.getBatchName());
+
             if(subject.getTeacher().getBatch() != null){
                 response.setBatchName(subject.getTeacher().getBatch().getBatchName());
             }
