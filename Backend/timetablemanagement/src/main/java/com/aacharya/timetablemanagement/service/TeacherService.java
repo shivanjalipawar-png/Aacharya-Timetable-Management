@@ -76,13 +76,7 @@ public class TeacherService {
 
             TeacherResponseDTO response = new TeacherResponseDTO();
 
-//            response.setTeacherId(teacher.getTeacherId());
-//            response.setTeacherName(teacher.getName());
-//            response.setEmail(teacher.getEmail());
-//            response.setPhone(teacher.getPhone());
-//            response.setQualification(teacher.getQualification());
-//            response.setSpecialization(teacher.getSpecialization());
-//            response.setBatchName(teacher.getBatch().getBatchName());
+
 
             responseList.add(response);
         }
@@ -101,7 +95,7 @@ public class TeacherService {
             throw new ResourceNotFoundException("Teacher not found with id: " + id);
         }
         logger.info("Retrieved teacher: {}", teacher.getName());
-        TeacherResponseDTO response=new TeacherResponseDTO();
+        TeacherResponseDTO response =new TeacherResponseDTO();
 //        response.setTeacherId(teacher.getTeacherId());
 //        response.setTeacherName(teacher.getName());
 //        response.setEmail(teacher.getEmail());
@@ -112,6 +106,7 @@ public class TeacherService {
 
         return response;
     }
+
     public TeacherResponseDTO updateTeacher(
             Long id,
             TeacherRequestDTO requestDTO) {

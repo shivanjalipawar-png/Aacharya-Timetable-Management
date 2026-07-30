@@ -128,7 +128,6 @@ public class TeacherController {
 
         teacherService.deleteTeacher(id);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .build();
+        return ResponseEntity.noContent().build();
     }
 }

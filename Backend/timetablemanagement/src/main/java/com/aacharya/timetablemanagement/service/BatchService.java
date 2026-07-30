@@ -19,6 +19,7 @@ public class BatchService {
     private static final Logger logger =
             LoggerFactory.getLogger(BatchService.class);
 
+
     public Batch saveBatch(Batch batch) {
 
         logger.info("Saving batch: {}", batch.getBatchName());

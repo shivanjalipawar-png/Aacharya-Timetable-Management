@@ -1,10 +1,11 @@
 package com.aacharya.timetablemanagement.controller;
 
 
+import com.aacharya.timetablemanagement.dto.SubjectRequestDTO;
+import com.aacharya.timetablemanagement.dto.SubjectResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.aacharya.timetablemanagement.service.SubjectService;
-import com.aacharya.timetablemanagement.entity.Subject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
@@ -34,13 +35,13 @@ public class SubjectController {
     })
 
 @PostMapping
-public ResponseEntity<Subject> saveSubject(@RequestBody Subject subject){
+public ResponseEntity<SubjectResponseDTO> saveSubject(@RequestBody SubjectRequestDTO requestDTO){
 
-    Subject savedSubject = subjectService.save(subject);
-
+    //Subject savedSubject = subjectService.save(subject);
+        SubjectResponseDTO response = subjectService.save(requestDTO);
 
     return ResponseEntity.status(HttpStatus.CREATED)
-            .body(savedSubject);
+            .body(response);
 }
 
     @Operation(
@@ -53,8 +54,11 @@ public ResponseEntity<Subject> saveSubject(@RequestBody Subject subject){
 
 
 @GetMapping
-    public List<Subject> getAllSubject() {
-    return subjectService.getAllSubjects();
+    public ResponseEntity<List<SubjectResponseDTO>> getAllSubject() {
+        List<SubjectResponseDTO> subjects = subjectService.getAllSubjects();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(subjects);
 }
 
     @Operation(
@@ -68,11 +72,11 @@ public ResponseEntity<Subject> saveSubject(@RequestBody Subject subject){
     })
 
 @GetMapping("/{id}")
-    public ResponseEntity<Subject>getSubjectById(@PathVariable Long id){
-    Subject subject = subjectService.getSubjectById(id);
+    public ResponseEntity<SubjectResponseDTO>getSubjectById(@PathVariable Long id){
+    SubjectResponseDTO subjectResponse = subjectService.getSubjectById(id);
 
     return ResponseEntity.status(HttpStatus.OK)
-            .body(subject);
+            .body(subjectResponse);
 }
 @Operation(
         summary="Update subject .",
@@ -84,13 +88,13 @@ public ResponseEntity<Subject> saveSubject(@RequestBody Subject subject){
         @ApiResponse(responseCode = "400", description = "Invalid subject data. ")
 })
     @PutMapping("/{id}")
-    public ResponseEntity<Subject> updateSubject(@PathVariable Long id,
-                                                 @RequestBody Subject updateSubject){
+    public ResponseEntity<SubjectResponseDTO> updateSubject(@PathVariable Long id,
+                                                 @RequestBody SubjectRequestDTO requestDTO){
 
-        Subject subject = subjectService.updateSubject(id, updateSubject);
+        SubjectResponseDTO updateSubject = subjectService.updateSubject(id, requestDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(subject);
+                .body(updateSubject);
     }
 
     @Operation(
@@ -101,6 +105,7 @@ public ResponseEntity<Subject> saveSubject(@RequestBody Subject subject){
             responseCode = "204",
             description = "Subject deleted successfully."
     )
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSubject(@PathVariable Long id){
