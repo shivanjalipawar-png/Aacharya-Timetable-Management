@@ -13,14 +13,23 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         <Route path="/" element={<Login />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
+
         <Route path="/teachers" element={<Teachers />} />
+
         <Route path="/batches" element={<Batches />} />
+
         <Route path="/subjects" element={<Subjects />} />
+
         <Route path="/timetable" element={<Timetable />} />
+
         <Route path="/notifications" element={<Notifications />} />
+
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,756 @@
+/* ==========================================
+   BATCH MANAGEMENT
+   1729 ACHARYA ACADEMY
+========================================== */
+
+.batches-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #faf8f5;
+}
+
+.batches-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.batches-main {
+    padding: 35px;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.batches-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.batches-header h1 {
+    color: #9f0015;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.batches-header p {
+    color: #707070;
+    font-size: 14px;
+}
+
+.add-batch-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 20px;
+
+    background: #9f0015;
+    color: white;
+
+    border: none;
+    border-radius: 11px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.add-batch-btn:hover {
+    background: #7c0010;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(159, 0, 21, 0.2);
+}
+
+
+/* ==========================================
+   SUMMARY CARDS
+========================================== */
+
+.batch-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.batch-summary-card {
+    background: #ffffff;
+
+    border: 1px solid #eee8e3;
+    border-radius: 15px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.05);
+
+    transition: 0.25s ease;
+}
+
+.batch-summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.batch-summary-card > svg {
+    width: 45px;
+    height: 45px;
+
+    padding: 11px;
+
+    color: #9f0015;
+    background: #f9eeee;
+
+    border-radius: 12px;
+}
+
+.batch-summary-card div {
+    display: flex;
+    flex-direction: column;
+}
+
+.batch-summary-card span {
+    color: #777;
+    font-size: 13px;
+}
+
+.batch-summary-card strong {
+    color: #9f0015;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+/* ==========================================
+   SEARCH AND FILTER
+========================================== */
+
+.batch-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+}
+
+.batch-search {
+    flex: 1;
+    max-width: 430px;
+
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 0 15px;
+
+    background: #ffffff;
+
+    border: 1px solid #e7e1dc;
+    border-radius: 11px;
+
+    transition: 0.2s ease;
+}
+
+.batch-search:focus-within {
+    border-color: #9f0015;
+    box-shadow: 0 0 0 3px rgba(159, 0, 21, 0.08);
+}
+
+.batch-search svg {
+    color: #888;
+}
+
+.batch-search input {
+    flex: 1;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    color: #333;
+}
+
+.batch-search input::placeholder {
+    color: #aaa;
+}
+
+.batch-controls select {
+    min-width: 180px;
+    height: 46px;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #e7e1dc;
+    border-radius: 11px;
+
+    color: #444;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+    cursor: pointer;
+}
+
+.batch-controls select:focus {
+    border-color: #9f0015;
+    box-shadow: 0 0 0 3px rgba(159, 0, 21, 0.08);
+}
+
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.batch-table-container {
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #eee8e3;
+    border-radius: 16px;
+
+    overflow-x: auto;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.batch-table {
+    width: 100%;
+    min-width: 850px;
+
+    border-collapse: collapse;
+}
+
+.batch-table thead {
+    background: #9f0015;
+}
+
+.batch-table th {
+    padding: 16px 18px;
+
+    color: #ffffff;
+
+    text-align: left;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.batch-table td {
+    padding: 18px;
+
+    border-bottom: 1px solid #f0ece8;
+
+    vertical-align: middle;
+
+    color: #444;
+
+    font-size: 14px;
+}
+
+.batch-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.batch-table tbody tr:hover {
+    background: #fcfaf8;
+}
+
+.batch-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ==========================================
+   BATCH NAME
+========================================== */
+
+.batch-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.batch-avatar {
+    width: 48px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #f6e9e9;
+
+    color: #9f0015;
+
+    border-radius: 10px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.batch-name-cell strong {
+    display: block;
+
+    color: #333;
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+}
+
+.batch-name-cell span {
+    color: #999;
+    font-size: 12px;
+}
+
+
+/* ==========================================
+   COURSE BADGE
+========================================== */
+
+.course-badge {
+    display: inline-block;
+
+    padding: 6px 11px;
+
+    color: #9f0015;
+    background: #f8eded;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SUBJECTS
+========================================== */
+
+.subject-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.subject-list span {
+    padding: 5px 9px;
+
+    background: #faf6ed;
+    color: #795d22;
+
+    border: 1px solid #eee0bd;
+    border-radius: 7px;
+
+    font-size: 11px;
+    font-weight: 500;
+}
+
+
+/* ==========================================
+   STUDENT COUNT
+========================================== */
+
+.student-count {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #555;
+}
+
+.student-count svg {
+    color: #caa24d;
+}
+
+
+/* ==========================================
+   EMPTY RESULT
+========================================== */
+
+.no-batches {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    color: #888;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   ADD BATCH MODAL
+========================================== */
+
+.batch-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(30, 20, 20, 0.55);
+
+    backdrop-filter: blur(3px);
+}
+
+.batch-modal {
+    width: 100%;
+    max-width: 540px;
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 28px;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+    animation: batchModalOpen 0.2s ease;
+}
+
+@keyframes batchModalOpen {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ==========================================
+   MODAL HEADER
+========================================== */
+
+.batch-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee8e3;
+}
+
+.batch-modal-header h2 {
+    color: #9f0015;
+
+    font-size: 23px;
+    font-weight: 700;
+
+    margin-bottom: 4px;
+}
+
+.batch-modal-header p {
+    color: #888;
+    font-size: 13px;
+}
+
+.batch-modal-close {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #faf8f5;
+
+    color: #666;
+
+    border: none;
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.batch-modal-close:hover {
+    background: #f7e9e9;
+    color: #9f0015;
+}
+
+
+/* ==========================================
+   MODAL FORM
+========================================== */
+
+.batch-form-group {
+    margin-bottom: 20px;
+}
+
+.batch-form-group label {
+    display: block;
+
+    color: #444;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+.batch-form-group input,
+.batch-form-group select {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 13px;
+
+    background: #ffffff;
+
+    color: #333;
+
+    border: 1px solid #ded8d3;
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.batch-form-group input:focus,
+.batch-form-group select:focus {
+    border-color: #9f0015;
+
+    box-shadow: 0 0 0 3px rgba(159, 0, 21, 0.08);
+}
+
+.batch-form-group input::placeholder {
+    color: #aaa;
+}
+
+
+/* ==========================================
+   AUTO SUBJECT DISPLAY
+========================================== */
+
+.auto-subject-box {
+    margin-bottom: 20px;
+
+    padding: 16px;
+
+    background: #faf8f5;
+
+    border: 1px solid #eee5dc;
+    border-radius: 11px;
+}
+
+.auto-subject-box > span {
+    display: block;
+
+    color: #444;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    margin-bottom: 10px;
+}
+
+.auto-subject-box div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+
+    margin-bottom: 9px;
+}
+
+.auto-subject-box strong {
+    padding: 5px 9px;
+
+    background: #f8eded;
+
+    color: #9f0015;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.auto-subject-box small {
+    color: #888;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   MODAL ACTIONS
+========================================== */
+
+.batch-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eee8e3;
+}
+
+.batch-cancel-btn,
+.save-batch-btn {
+    min-width: 110px;
+    height: 43px;
+
+    padding: 0 18px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.batch-cancel-btn {
+    background: #ffffff;
+
+    color: #555;
+
+    border: 1px solid #ded8d3;
+}
+
+.batch-cancel-btn:hover {
+    background: #f5f3f1;
+}
+
+.save-batch-btn {
+    background: #9f0015;
+
+    color: #ffffff;
+
+    border: 1px solid #9f0015;
+}
+
+.save-batch-btn:hover {
+    background: #7c0010;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 15px rgba(159, 0, 21, 0.18);
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 800px) {
+
+    .batches-main {
+        padding: 22px;
+    }
+
+    .batches-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .add-batch-btn {
+        width: 100%;
+    }
+
+    .batch-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .batch-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .batch-search {
+        max-width: none;
+    }
+
+    .batch-controls select {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .batches-main {
+        padding: 18px;
+    }
+
+    .batches-header h1 {
+        font-size: 24px;
+    }
+
+    .batch-modal-overlay {
+        padding: 12px;
+    }
+
+    .batch-modal {
+        padding: 22px 18px;
+    }
+
+    .batch-modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .batch-cancel-btn,
+    .save-batch-btn {
+        width: 100%;
+    }
+}

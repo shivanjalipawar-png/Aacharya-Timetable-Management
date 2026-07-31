@@ -1,0 +1,410 @@
+/* ==========================================
+        DASHBOARD - 1729 ACHARYA ACADEMY
+========================================== */
+
+.dashboard-layout{
+    display:flex;
+    min-height:100vh;
+    background:#faf8f5;
+}
+
+/* Main Content */
+
+.dashboard-content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Dashboard Body */
+
+.dashboard-main{
+    padding:35px;
+}
+
+/* Header */
+
+.dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.dashboard-header h1{
+    color:#9f0015;
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.dashboard-header p{
+    color:#666;
+    font-size:15px;
+}
+
+/* ===========================
+        CARDS
+=========================== */
+
+.card-container{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:22px;
+
+    margin-bottom:35px;
+
+}
+
+/* ===========================
+      DASHBOARD GRID
+=========================== */
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+
+    gap:25px;
+
+}
+
+/* ===========================
+        BOXES
+=========================== */
+
+.dashboard-box{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.dashboard-box:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.dashboard-box h2{
+
+    color:#9f0015;
+
+    margin-bottom:22px;
+
+    font-size:20px;
+
+    border-bottom:2px solid #f3f3f3;
+
+    padding-bottom:12px;
+
+}
+
+/* ===========================
+      TODAY'S SCHEDULE
+=========================== */
+
+.schedule-item{
+
+    padding:15px 0;
+
+    border-bottom:1px solid #ececec;
+
+}
+
+.schedule-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.schedule-item strong{
+
+    color:#9f0015;
+
+    font-size:15px;
+
+}
+
+.schedule-item h4{
+
+    margin:8px 0;
+
+    font-size:18px;
+
+}
+
+.schedule-item p{
+
+    color:#444;
+
+    margin-bottom:4px;
+
+}
+
+.schedule-item span{
+
+    color:#888;
+
+    font-size:14px;
+
+}
+
+/* ===========================
+      FACULTY
+=========================== */
+
+.faculty-item{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:flex-start;
+
+    padding:18px 0;
+
+    border-bottom:1px solid #ececec;
+
+}
+
+.faculty-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.status-dot{
+
+    width:14px;
+
+    height:14px;
+
+    border-radius:50%;
+
+    background:#2ecc71;
+
+    margin-top:6px;
+
+    flex-shrink:0;
+
+}
+
+.faculty-item strong{
+
+    color:#9f0015;
+
+    font-size:17px;
+
+}
+
+.faculty-item p{
+
+    margin:4px 0;
+
+    color:#333;
+
+}
+
+.faculty-item span{
+
+    display:block;
+
+    color:#555;
+
+    font-size:14px;
+
+}
+
+.faculty-item small{
+
+    color:#888;
+
+}
+
+/* ===========================
+      QUICK ACTIONS
+=========================== */
+
+.action-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:15px;
+
+}
+
+.action-btn{
+
+    background:#9f0015;
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:14px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.action-btn:hover{
+
+    background:#7b0011;
+
+    transform:translateY(-3px);
+
+    box-shadow:0 8px 18px rgba(159,0,21,.25);
+
+}
+
+/* ===========================
+      RECENT UPDATES
+=========================== */
+
+.dashboard-box ul{
+
+    list-style:none;
+
+}
+
+.dashboard-box li{
+
+    padding:12px 0;
+
+    border-bottom:1px solid #ececec;
+
+    color:#444;
+
+}
+
+.dashboard-box li:last-child{
+
+    border-bottom:none;
+
+}
+
+/* ===========================
+      SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#c7c7c7;
+
+    border-radius:20px;
+
+}
+
+/* ===========================
+      MOBILE
+=========================== */
+
+@media(max-width:992px){
+
+.dashboard-main{
+
+padding:22px;
+
+}
+
+.dashboard-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:10px;
+
+}
+
+.dashboard-header h1{
+
+font-size:28px;
+
+}
+
+.card-container{
+
+grid-template-columns:1fr 1fr;
+
+}
+
+.action-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+@media(max-width:500px){
+
+.dashboard-main{
+
+padding:18px;
+
+}
+
+.card-container{
+
+grid-template-columns:1fr;
+
+}
+
+.dashboard-box{
+
+padding:18px;
+
+}
+
+.dashboard-header h1{
+
+font-size:24px;
+
+}
+
+.dashboard-box h2{
+
+font-size:18px;
+
+}
+
+}

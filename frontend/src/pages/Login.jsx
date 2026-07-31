@@ -1,15 +1,23 @@
+import academyLogo from "../assets/acharya-logo.jpg";
 import "../styles/Login.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleLogin = (e) => {
+    e.preventDefault(); // Prevent page refresh
+    navigate("/dashboard");
+  };
 
   return (
     <div className="login-container">
       <div className="login-card">
 
-        <div className="logo-circle">
-          AA
+       <div className="logo-circle">
+          <img src={academyLogo} alt="1729 Acharya Academy Logo" />
         </div>
 
         <h1>1729 ACHARYA ACADEMY</h1>
@@ -20,13 +28,14 @@ function Login() {
           Sign in to access your timetable dashboard
         </p>
 
-        <form>
+        <form onSubmit={handleLogin}>
 
           <label>Email Address</label>
 
           <input
             type="email"
             placeholder="Enter your email"
+           // required
           />
 
           <label>Password</label>
@@ -36,6 +45,7 @@ function Login() {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
+             // required
             />
 
             <button
@@ -59,7 +69,10 @@ function Login() {
 
           </div>
 
-          <button type="submit" className="login-btn">
+          <button
+            type="submit"
+            className="login-btn"
+          >
             LOGIN
           </button>
 
