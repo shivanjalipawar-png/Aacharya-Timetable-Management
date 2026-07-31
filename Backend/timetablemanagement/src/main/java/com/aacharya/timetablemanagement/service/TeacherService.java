@@ -96,13 +96,13 @@ public class TeacherService {
         }
         logger.info("Retrieved teacher: {}", teacher.getName());
         TeacherResponseDTO response =new TeacherResponseDTO();
-//        response.setTeacherId(teacher.getTeacherId());
-//        response.setTeacherName(teacher.getName());
-//        response.setEmail(teacher.getEmail());
-//        response.setPhone(teacher.getPhone());
-//        response.setQualification(teacher.getQualification());
-//        response.setSpecialization(teacher.getSpecialization());
-//        response.setBatchName(teacher.getBatch().getBatchName());
+      response.setTeacherId(teacher.getTeacherId());
+        response.setTeacherName(teacher.getName());
+        response.setEmail(teacher.getEmail());
+        response.setPhone(teacher.getPhone());
+        response.setQualification(teacher.getQualification());
+        response.setSpecialization(teacher.getSpecialization());
+        response.setBatchName(teacher.getBatch().getBatchName());
 
         return response;
     }
