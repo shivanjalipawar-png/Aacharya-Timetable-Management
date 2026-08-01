@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,7 @@ public class TimetableController {
                 .body(timetables);
     }
 
+
     @Operation(
             summary = "Get timetable by ID",
              description = "Returns the timetable corresponding to the specified timetable ID."
@@ -78,6 +80,85 @@ public class TimetableController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(timetable);
     }
+
+
+    @Operation(
+            summary = "Get timetables by Teacher ID",
+            description = "Returns all timetables corresponding to the specified teacher ID."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Timetables retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No timetable found for the specified teacher ID"
+            )
+    })
+    @GetMapping("/teacher/{teacherId}")
+    public ResponseEntity<List<TimetableResponseDTO>> getTimetableByTeacher(
+            @PathVariable Long teacherId) {
+
+        List<TimetableResponseDTO> timetables =
+                timetableService.getTimetableByTeacher(teacherId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(timetables);
+    }
+
+    @Operation(
+            summary = "Get timetables by Batch ID",
+            description = "Returns all timetables corresponding to the specified batch ID."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Timetables retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No timetable found for the specified batch ID"
+            )
+    })
+    @GetMapping("/batch/{batchId}")
+    public ResponseEntity<List<TimetableResponseDTO>> getTimetableByBatch(
+            @PathVariable Long batchId) {
+
+        List<TimetableResponseDTO> timetables =
+                timetableService.getTimetableByBatch(batchId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(timetables);
+    }
+
+
+    @Operation(
+            summary = "Get timetables by Subject ID",
+            description = "Returns all timetables corresponding to the specified subject ID."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Timetables retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No timetable found for the specified subject ID"
+            )
+    })
+    @GetMapping("/subject/{subjectId}")
+    public ResponseEntity<List<TimetableResponseDTO>> getTimetableBySubject(
+            @PathVariable Long subjectId) {
+
+        List<TimetableResponseDTO> timetables =
+                timetableService.getTimetableBySubject(subjectId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(timetables);
+    }
+
+
 
 
     @Operation(

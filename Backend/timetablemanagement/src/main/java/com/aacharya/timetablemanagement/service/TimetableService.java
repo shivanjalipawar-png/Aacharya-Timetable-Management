@@ -120,8 +120,108 @@ public class TimetableService {
         }
         return timetableResponseDTOArrayList;
 
-
     }
+
+
+    public List<TimetableResponseDTO> getTimetableByTeacher(Long teacherId){
+
+        logger.info("Fetching timetables for teacher id: {}", teacherId);
+        List<Timetable> timetables =
+                timetableRepository.findByTeacher_TeacherId(teacherId);
+        if (timetables.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No timetable found for teacher id: " + teacherId);
+        }
+        List<TimetableResponseDTO> responses = new ArrayList<>();
+
+        for (Timetable timetable : timetables) {
+
+            TimetableResponseDTO response = new TimetableResponseDTO();
+
+            response.setTimetableId(timetable.getTimetableId());
+            response.setDay(timetable.getDay());
+            response.setStartTime(timetable.getStartTime());
+            response.setEndTime(timetable.getEndTime());
+            response.setTeacherName(timetable.getTeacher().getName());
+            response.setBatchName(timetable.getBatch().getBatchName());
+            response.setSubjectName(timetable.getSubject().getSubjectName());
+            response.setClassroom(timetable.getClassroom());
+
+            responses.add(response);
+        }
+
+        logger.info("Found {} timetable(s) for teacher id: {}", responses.size(), teacherId);
+        return responses;
+    }
+
+
+    //timetable By batchId
+    public List<TimetableResponseDTO> getTimetableByBatch(Long batchId){
+
+        logger.info("Fetching timetables for batch id: {}", batchId);
+        List<Timetable> timetables =
+                timetableRepository.findByBatch_BatchId(batchId);
+        if (timetables.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No timetable found for batch id: " + batchId);
+        }
+        List<TimetableResponseDTO> responses = new ArrayList<>();
+
+        for (Timetable timetable : timetables) {
+
+            TimetableResponseDTO response = new TimetableResponseDTO();
+
+            response.setTimetableId(timetable.getTimetableId());
+            response.setDay(timetable.getDay());
+            response.setStartTime(timetable.getStartTime());
+            response.setEndTime(timetable.getEndTime());
+            response.setTeacherName(timetable.getTeacher().getName());
+            response.setBatchName(timetable.getBatch().getBatchName());
+            response.setSubjectName(timetable.getSubject().getSubjectName());
+            response.setClassroom(timetable.getClassroom());
+
+            responses.add(response);
+        }
+
+        logger.info("Found {} timetable(s) for batch id: {}", responses.size(), batchId);
+        return responses;
+    }
+
+    //timetable By subject
+    public List<TimetableResponseDTO> getTimetableBySubject(Long subjectId){
+
+        logger.info("Fetching timetables for subject id: {}", subjectId);
+        List<Timetable> timetables =
+                timetableRepository.findBySubject_SubjectId(subjectId);
+        if (timetables.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No timetable found for subject id: " + subjectId);
+        }
+        List<TimetableResponseDTO> responses = new ArrayList<>();
+
+        for (Timetable timetable : timetables) {
+
+            TimetableResponseDTO response = new TimetableResponseDTO();
+
+            response.setTimetableId(timetable.getTimetableId());
+            response.setDay(timetable.getDay());
+            response.setStartTime(timetable.getStartTime());
+            response.setEndTime(timetable.getEndTime());
+            response.setTeacherName(timetable.getTeacher().getName());
+            response.setBatchName(timetable.getBatch().getBatchName());
+            response.setSubjectName(timetable.getSubject().getSubjectName());
+            response.setClassroom(timetable.getClassroom());
+
+            responses.add(response);
+        }
+
+        logger.info("Found {} timetable(s) for subject id: {}", responses.size(), subjectId);
+        return responses;
+    }
+
+
+
+
     public TimetableResponseDTO getTimetableById(Long id){
         logger.info("Fetching timetable with id: {}", id);
 
