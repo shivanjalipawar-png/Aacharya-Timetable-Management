@@ -6,6 +6,7 @@ import com.aacharya.timetablemanagement.entity.Batch;
 import com.aacharya.timetablemanagement.entity.Subject;
 import com.aacharya.timetablemanagement.entity.Teacher;
 import com.aacharya.timetablemanagement.entity.Timetable;
+import com.aacharya.timetablemanagement.exception.ConflictException;
 import com.aacharya.timetablemanagement.exception.ResourceNotFoundException;
 import com.aacharya.timetablemanagement.repository.BatchRepository;
 import com.aacharya.timetablemanagement.repository.SubjectRepository;
@@ -43,12 +44,12 @@ public class TimetableService {
     public TimetableResponseDTO saveTimetable(TimetableRequestDTO requestDTO) {
 
 
-        Timetable time = new Timetable();
+        Timetable timetable = new Timetable();
 
-        time.setClassroom(requestDTO.getClassroom());
-        time.setStartTime(requestDTO.getStartTime());
-        time.setEndTime(requestDTO.getEndTime());
-        time.setDay(requestDTO.getDay());
+        timetable.setClassroom(requestDTO.getClassroom());
+        timetable.setStartTime(requestDTO.getStartTime());
+        timetable.setEndTime(requestDTO.getEndTime());
+        timetable.setDay(requestDTO.getDay());
 
         Long batchId = requestDTO.getBatchId();
 
@@ -58,7 +59,7 @@ public class TimetableService {
             throw new ResourceNotFoundException("Batch not found with id: " + batchId);
         }
 
-        time.setBatch(batch);
+        timetable.setBatch(batch);
 
         Long teacherId = requestDTO.getTeacherId();
 
@@ -68,7 +69,9 @@ public class TimetableService {
             throw new ResourceNotFoundException("Teacher not found with id: " + teacherId);
         }
 
-        time.setTeacher(teacher);
+        timetable.setTeacher(teacher);
+
+
 
         Long subjectId = requestDTO.getSubjectId();
 
@@ -78,10 +81,72 @@ public class TimetableService {
             throw new ResourceNotFoundException("Subject not found with id: " + subjectId);
         }
 
-        time.setSubject(subject);
+        timetable.setSubject(subject);
+
+        // =====================
+       // Teacher Conflict Check
+       // =====================
+        logger.info("Checking teacher conflict...");
+        List<Timetable> teacherConflicts = timetableRepository.findTeacherConflicts(
+                teacher.getTeacherId(),
+                timetable.getDay(),
+                timetable.getStartTime(),
+                timetable.getEndTime()
+        );
+
+        logger.info("Teacher ID : {}", teacher.getTeacherId());
+        logger.info("Day        : {}", timetable.getDay());
+        logger.info("Start Time : {}", timetable.getStartTime());
+        logger.info("End Time   : {}", timetable.getEndTime());
+        logger.info("Teacher conflicts found: {}", teacherConflicts.size());
+
+        if (!teacherConflicts.isEmpty()) {
+            throw new ConflictException(
+                    "Teacher already has a class during this time."
+            );
+        }
+
+         // =====================
+        // Fetch Batch
+        // =====================
+        logger.info("Checking Batch  conflict...");
+        List<Timetable> batchConflicts = timetableRepository.findBatchConflicts(
+                batch.getBatchId(),
+                timetable.getDay(),
+                timetable.getStartTime(),
+                timetable.getEndTime()
+        );
+
+        logger.info("Batch conflicts found: {}", batchConflicts.size());
+        if (!batchConflicts.isEmpty()) {
+            throw new ConflictException(
+                    "Batch already has a class during this time."
+            );
+        }
+        // Classroom Conflict
+        logger.info("Checking classroom conflict...");
+        List<Timetable> classroomConflicts =
+                timetableRepository.findClassroomConflicts(
+                        timetable.getClassroom(),
+                        timetable.getDay(),
+                        timetable.getStartTime(),
+                        timetable.getEndTime()
+                );
+
+        logger.info("Classroom conflicts found: {}", classroomConflicts.size());
+
+        if (!classroomConflicts.isEmpty()) {
+            throw new ConflictException(
+                    "Classroom already has a scheduled  class during this time."
+            );
+        }
+        // =====================
+         // Save Timetable
+        // =====================
+
         logger.info("Saving timetable for batch: {}", batch.getBatchName());
 
-        Timetable savedTimetable = timetableRepository.save(time);
+        Timetable savedTimetable = timetableRepository.save(timetable);
 
         logger.info("Timetable created successfully with id: {}", savedTimetable.getTimetableId());
 
