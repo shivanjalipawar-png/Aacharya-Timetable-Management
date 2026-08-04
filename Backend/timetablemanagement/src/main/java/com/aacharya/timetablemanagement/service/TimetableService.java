@@ -92,6 +92,7 @@ public class TimetableService {
                 timetable.getDay(),
                 timetable.getStartTime(),
                 timetable.getEndTime()
+                // timetable.getTimetableId()
         );
 
         logger.info("Teacher ID : {}", teacher.getTeacherId());
@@ -115,6 +116,7 @@ public class TimetableService {
                 timetable.getDay(),
                 timetable.getStartTime(),
                 timetable.getEndTime()
+                //timetable.getTimetableId()
         );
 
         logger.info("Batch conflicts found: {}", batchConflicts.size());
@@ -131,6 +133,7 @@ public class TimetableService {
                         timetable.getDay(),
                         timetable.getStartTime(),
                         timetable.getEndTime()
+                        //timetable.getTimetableId()
                 );
 
         logger.info("Classroom conflicts found: {}", classroomConflicts.size());
@@ -313,12 +316,10 @@ public class TimetableService {
     }
 
     public TimetableResponseDTO updateTimetable(Long id, TimetableRequestDTO requestDTO){
-        Timetable timetable =
-                timetableRepository.findById(id).orElse(null);
-
-        if (timetable == null) {
-            throw new ResourceNotFoundException("Timetable not found with id: " + id);
-        }
+        Timetable timetable = timetableRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Timetable not found with id: " + id));
 
         timetable.setClassroom(requestDTO.getClassroom());
         timetable.setStartTime(requestDTO.getStartTime());
@@ -327,12 +328,34 @@ public class TimetableService {
 
         Long teacherId = requestDTO.getTeacherId();
 
-        Teacher teacher = teacherRepository.findById(teacherId).orElse(null);
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Teacher not found with id: " + teacherId));
 
-        if (teacher == null) {
-            throw new ResourceNotFoundException("Teacher not found with id: " + teacherId);
-        }
         timetable.setTeacher(teacher);
+        // Teacher Conflict Check
+        // =====================
+        logger.info("Checking teacher conflict...");
+        List<Timetable> teacherConflicts = timetableRepository.updateTeacherConflicts(
+                teacher.getTeacherId(),
+                timetable.getDay(),
+                timetable.getStartTime(),
+                timetable.getEndTime(),
+                timetable.getTimetableId()
+        );
+
+        logger.info("Teacher ID : {}", teacher.getTeacherId());
+        logger.info("Day        : {}", timetable.getDay());
+        logger.info("Start Time : {}", timetable.getStartTime());
+        logger.info("End Time   : {}", timetable.getEndTime());
+        logger.info("Teacher conflicts found: {}", teacherConflicts.size());
+        if (!teacherConflicts.isEmpty()) {
+            throw new ConflictException(
+                    "Teacher already has a class during this time."
+            );
+        }
+
 
         Long batchId = requestDTO.getBatchId();
 
@@ -353,6 +376,44 @@ public class TimetableService {
         }
 
         timetable.setSubject(subject);
+
+        // =====================
+        // Fetch Batch
+        // =====================
+        logger.info("Checking batch conflict...");
+        List<Timetable> batchConflicts = timetableRepository.updateBatchConflicts(
+                batch.getBatchId(),
+                timetable.getDay(),
+                timetable.getStartTime(),
+                timetable.getEndTime(),
+                timetable.getTimetableId()
+        );
+
+        logger.info("Batch conflicts found: {}", batchConflicts.size());
+        if (!batchConflicts.isEmpty()) {
+            throw new ConflictException(
+                    "Batch already has a class during this time."
+            );
+        }
+        // Classroom Conflict
+        logger.info("Checking classroom conflict...");
+        List<Timetable> classroomConflicts =
+                timetableRepository.updateClassroomConflicts(
+                        timetable.getClassroom(),
+                        timetable.getDay(),
+                        timetable.getStartTime(),
+                        timetable.getEndTime(),
+                        timetable.getTimetableId()
+                );
+
+        logger.info("Classroom conflicts found: {}", classroomConflicts.size());
+
+        if (!classroomConflicts.isEmpty()) {
+            throw new ConflictException(
+                    "Classroom already has a scheduled  class during this time."
+            );
+        }
+
         logger.info("Updating timetable with id: {}", id);
         Timetable savedTimetable = timetableRepository.save(timetable);
 
@@ -376,17 +437,21 @@ public class TimetableService {
 
     public void deleteTimetable(Long id) {
 
-        Timetable timetables = timetableRepository.findById(id).orElse(null);
+        logger.info("Delete request received for id: {}", id);
 
-        if (timetables == null) {
-            throw new ResourceNotFoundException("Timetable not found with id: " + id);
+        Timetable timetable = timetableRepository.findById(id).orElse(null);
+
+        logger.info("Fetched timetable object: {}", timetable);
+
+        if (timetable == null) {
+            throw new ResourceNotFoundException(
+                    "Timetable not found with id: " + id);
         }
 
-        logger.info("Deleting timetable: {}", timetables.getTimetableId());
-        timetableRepository.delete(timetables);
-        logger.info("Timetable deleted successfully: {}", timetables.getTimetableId());
+        timetableRepository.delete(timetable);
 
-
+        logger.info("Deleted successfully.");
+        logger.info("Timetable deleted successfully with id: {}", id);
     }
 
 

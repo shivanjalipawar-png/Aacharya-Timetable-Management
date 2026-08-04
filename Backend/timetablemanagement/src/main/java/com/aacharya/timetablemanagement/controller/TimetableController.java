@@ -197,13 +197,13 @@ public class TimetableController {
                     description = "Timetable not found for the specified ID"
             )
     })
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTimetable(
-            @PathVariable Long id) {
+
+    public ResponseEntity<Void> deleteTimetable(@PathVariable Long id) {
 
         timetableService.deleteTimetable(id);
 
         return ResponseEntity.noContent().build();
     }
-
 }

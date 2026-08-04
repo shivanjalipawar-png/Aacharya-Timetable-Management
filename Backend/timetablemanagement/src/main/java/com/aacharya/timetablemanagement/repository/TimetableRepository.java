@@ -18,6 +18,8 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long>{
 
     List<Timetable> findBySubject_SubjectId(Long subjectId);
 
+
+    //JPQL for  save batch conflict
     @Query("""
 SELECT t FROM Timetable t
 WHERE t.batch.batchId = :batchId
@@ -26,14 +28,39 @@ AND (
         :startTime < t.endTime
     AND :endTime > t.startTime
 )
+
 """)
     List<Timetable> findBatchConflicts(
             @Param("batchId") Long batchId,
             @Param("day") DayOfWeek day,
             @Param("startTime") LocalTime startTime,
             @Param("endTime") LocalTime endTime
+
     );
 
+    //JPQL for  update batch conflict
+    @Query("""
+SELECT t FROM Timetable t
+WHERE t.batch.batchId = :batchId
+AND t.day = :day
+AND (
+        :startTime < t.endTime
+    AND :endTime > t.startTime
+)
+AND t.timetableId <>:timetableId
+""")
+    List<Timetable> updateBatchConflicts(
+            @Param("batchId") Long batchId,
+            @Param("day") DayOfWeek day,
+            @Param("startTime") LocalTime startTime,
+            @Param("endTime") LocalTime endTime,
+            @Param("timetableId") Long timetableId
+    );
+
+
+
+
+    //===JPQL for save  teacher conflict====
     @Query("""
 SELECT t FROM Timetable t
 WHERE t.teacher.teacherId = :teacherId
@@ -41,7 +68,9 @@ AND t.day = :day
 AND (
         :startTime < t.endTime
     AND :endTime > t.startTime
+   
 )
+
 """)
     List<Timetable> findTeacherConflicts(
             @Param("teacherId") Long teacherId,
@@ -50,7 +79,28 @@ AND (
             @Param("endTime") LocalTime endTime
     );
 
-    //
+    //===JPQL for update teacher conflict====
+    @Query("""
+SELECT t FROM Timetable t
+WHERE t.teacher.teacherId = :teacherId
+AND t.day = :day
+AND (
+        :startTime < t.endTime
+    AND :endTime > t.startTime
+   
+)
+  AND t.timetableId <>:timetableId
+""")
+    List<Timetable> updateTeacherConflicts(
+            @Param("teacherId") Long teacherId,
+            @Param("day") DayOfWeek day,
+            @Param("startTime") LocalTime startTime,
+            @Param("endTime") LocalTime endTime,
+            @Param("timetableId") Long timetableId
+
+    );
+
+    // JPQL for save classroom conflict
     @Query("""
 SELECT t FROM Timetable t
 WHERE t.classroom = :classroom
@@ -59,13 +109,38 @@ AND (
        :startTime < t.endTime
    AND :endTime > t.startTime
 )
+  
+  
 """)
     List<Timetable> findClassroomConflicts(
             @Param("classroom") String classroom,
             @Param("day") DayOfWeek day,
             @Param("startTime") LocalTime startTime,
             @Param("endTime") LocalTime endTime
+
     );
+
+
+    // JPQL for update classroom conflict
+    @Query("""
+SELECT t FROM Timetable t
+WHERE t.classroom = :classroom
+AND t.day = :day
+AND (
+       :startTime < t.endTime
+   AND :endTime > t.startTime
+)
+   AND t.timetableId <> :timetableId
+  
+""")
+    List<Timetable> updateClassroomConflicts(
+            @Param("classroom") String classroom,
+            @Param("day") DayOfWeek day,
+            @Param("startTime") LocalTime startTime,
+            @Param("endTime") LocalTime endTime,
+            @Param("timetableId") Long timetableId
+    );
+    //------ For deleting-------
 
 
 }
