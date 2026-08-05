@@ -18,6 +18,30 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long>{
 
     List<Timetable> findBySubject_SubjectId(Long subjectId);
 
+    List<Timetable> findByStartTime(LocalTime startTime);
+
+    List<Timetable> findByEndTime(LocalTime endTime);
+
+    List<Timetable> findByStartTimeAndEndTime(
+            LocalTime startTime,
+            LocalTime endTime
+    );
+
+    List<Timetable> findByDay(DayOfWeek day);
+    List<Timetable> findByClassroom(String classroom);
+    List<Timetable> findByTeacher_TeacherIdAndDay(
+            Long teacherId,
+            DayOfWeek day
+    );
+    List<Timetable> findByBatch_BatchIdAndDay(
+            Long batchId,
+            DayOfWeek day
+    );
+
+
+
+
+
 
     //JPQL for  save batch conflict
     @Query("""
@@ -140,7 +164,20 @@ AND (
             @Param("endTime") LocalTime endTime,
             @Param("timetableId") Long timetableId
     );
-    //------ For deleting-------
+
+    // JPQL query for fetching timetable by time range
+    @Query("""
+SELECT t FROM Timetable t
+WHERE (
+       :startTime < t.endTime
+   AND :endTime > t.startTime
+)
+""")
+    List<Timetable> findTimetableByTimeRange(
+            @Param("startTime") LocalTime startTime,
+            @Param("endTime") LocalTime endTime
+    );
+
 
 
 }

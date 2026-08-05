@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ public class TimetableController {
     @Autowired
     private TimetableService timetableService;
 
+    //==== method tos ave all timetables===
 
     @Operation(summary = "Create a new timetable",
     description = "Creates a new timetable and stores it in the system."
@@ -45,6 +49,7 @@ public class TimetableController {
                 .body(response);
     }
 
+    //Fetch all timetables
     @Operation(
             summary = "Get all timetables",
             description = "Returns the complete list of timetables available in the system."
@@ -61,7 +66,7 @@ public class TimetableController {
                 .body(timetables);
     }
 
-
+//Method for get timetable by Id
     @Operation(
             summary = "Get timetable by ID",
              description = "Returns the timetable corresponding to the specified timetable ID."
@@ -81,7 +86,7 @@ public class TimetableController {
                 .body(timetable);
     }
 
-
+//Get  timetable by teacherId
     @Operation(
             summary = "Get timetables by Teacher ID",
             description = "Returns all timetables corresponding to the specified teacher ID."
@@ -107,6 +112,7 @@ public class TimetableController {
                 .body(timetables);
     }
 
+    //Get timetable by batchId
     @Operation(
             summary = "Get timetables by Batch ID",
             description = "Returns all timetables corresponding to the specified batch ID."
@@ -133,6 +139,7 @@ public class TimetableController {
     }
 
 
+    //Get timetable  by subject Id
     @Operation(
             summary = "Get timetables by Subject ID",
             description = "Returns all timetables corresponding to the specified subject ID."
@@ -157,10 +164,131 @@ public class TimetableController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(timetables);
     }
+    //get timetable for Day
+    @Operation(
+            summary = "get a timetable for day",
+           description="Return all the timetable scheduled for a day"
+    )
+@ApiResponses({
+        @ApiResponse(responseCode = "200",description = "Timetable fetched successfully for a day"),
+        @ApiResponse(responseCode = "404",description = "No timetable found for specific day")
+})
+    @GetMapping("/day/{day}")
+    public ResponseEntity<List<TimetableResponseDTO>> getTimetableByDay(
+            @PathVariable DayOfWeek day
+            ){
+       List<TimetableResponseDTO> timetables = timetableService.getTimetableByDay(day);
+            return  ResponseEntity.status(HttpStatus.OK).body(timetables);
+    }
+
+
+    //get timetable for classroom
+    @Operation(
+            summary = "get a timetable for classroom",
+            description="Return all the timetable scheduled for a classroom"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "Timetable fetched successfully for a classroom"),
+            @ApiResponse(responseCode = "404",description = "No timetable found for specific classroom")
+    })
+    @GetMapping("/classroom/{classroom}")
+    public ResponseEntity<List<TimetableResponseDTO>> getTimetableByClassroom(
+            @PathVariable String classroom
+    ){
+        List<TimetableResponseDTO> timetables = timetableService.getTimetableByClassroom(classroom);
+        return  ResponseEntity.status(HttpStatus.OK).body(timetables);
+    }
+
+//Get timetable by Time range
+@Operation(
+        summary = "Get timetables by time range ",
+        description = "Returns all timetables corresponding to the specified time range."
+)
+@ApiResponses({
+        @ApiResponse(
+                responseCode = "200",
+                description = "Timetables retrieved successfully"
+        ),
+        @ApiResponse(
+                responseCode = "404",
+                description = "No timetable found for the time range"
+        )
+})
+@GetMapping("/time-range/{startTime}/{endTime}")
+public ResponseEntity<List<TimetableResponseDTO>> getTimetableByTimeRange(
+        @PathVariable("startTime") LocalTime startTime,
+        @PathVariable("endTime") LocalTime endTime) {
+
+    List<TimetableResponseDTO> timetables =
+            timetableService.getTimetableByTimeRange(startTime , endTime);
+
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(timetables);
+}
+
+//get timetable for today=day
+@Operation(
+        summary = "Get today's timetable",
+        description = "Returns all timetables scheduled for the current day."
+)
+@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Today's timetable retrieved successfully"),
+        @ApiResponse(responseCode = "404", description = "No timetable found for today")
+})
+@GetMapping("/today")
+public ResponseEntity<List<TimetableResponseDTO>> getTodayTimetable() {
+
+    List<TimetableResponseDTO> timetables =
+            timetableService.getTodayTimetable();
+
+    return ResponseEntity.ok(timetables);
+}
+
+// Get timetable by teacher+day
+
+@Operation(
+        summary = "Get timetables by Teacher and Day",
+        description = "Returns all timetables for a specific teacher on a specific day."
+)
+@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Timetables retrieved successfully"),
+        @ApiResponse(responseCode = "404", description = "No timetable found for the specified teacher and day")
+})
+@GetMapping("/teacher/{teacherId}/day/{day}")
+public ResponseEntity<List<TimetableResponseDTO>> getTimetableByTeacherAndDay(
+        @PathVariable Long teacherId,
+        @PathVariable DayOfWeek day) {
+
+    List<TimetableResponseDTO> timetables =
+            timetableService.getTimetableByTeacherAndDay(teacherId, day);
+
+    return ResponseEntity.ok(timetables);
+}
+
+//get timetable by batch+day
+@Operation(
+        summary = "Get timetables by Batch and Day",
+        description = "Returns all timetables for a specific batch on a specific day."
+)
+@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Timetables retrieved successfully"),
+        @ApiResponse(responseCode = "404", description = "No timetable found for the specified batch and day")
+})
+@GetMapping("/batch/{batchId}/day/{day}")
+public ResponseEntity<List<TimetableResponseDTO>> getTimetableByBatchAndDay(
+        @PathVariable Long batchId,
+        @PathVariable DayOfWeek day) {
+
+    List<TimetableResponseDTO> timetables =
+            timetableService.getTimetableByBatchAndDay(batchId, day);
+
+    return ResponseEntity.ok(timetables);
+}
 
 
 
 
+//Update timetable
     @Operation(
             summary = "Update timetable",
             description = "Updates the timetable corresponding to the specified timetable ID."
@@ -182,7 +310,7 @@ public class TimetableController {
                 .body(response);
     }
 
-
+//Delete timetable
     @Operation(
             summary = "Delete timetable by ID",
             description = "Deletes the timetable corresponding to the specified timetable ID."

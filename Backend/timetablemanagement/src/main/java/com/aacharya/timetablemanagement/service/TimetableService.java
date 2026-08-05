@@ -15,8 +15,12 @@ import com.aacharya.timetablemanagement.repository.TimetableRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -314,6 +318,216 @@ public class TimetableService {
         return response;
 
     }
+    //New method for Day
+    public List<TimetableResponseDTO> getTimetableByDay(DayOfWeek day) {
+        logger.info("Fetching timetable for Day:{}",day);
+        List<Timetable> timetables= timetableRepository.findByDay(day);
+
+        //throw exception
+        if(timetables.isEmpty()){
+            throw new ResourceNotFoundException("timetable not foud for this day:"+day);
+        }
+
+        //Entity -> DTO
+        List<TimetableResponseDTO>  response =new ArrayList<>();
+        for(Timetable timetable: timetables){
+             TimetableResponseDTO dto = new TimetableResponseDTO();
+
+             dto.setTimetableId(timetable.getTimetableId());
+             dto.setDay(timetable.getDay());
+             dto.setStartTime(timetable.getStartTime());
+             dto.setEndTime(timetable.getEndTime());
+             dto.setBatchName(timetable.getBatch().getBatchName());
+             dto.setSubjectName(timetable.getSubject().getSubjectName());
+             dto.setTeacherName(timetable.getTeacher().getName());
+             dto.setClassroom(timetable.getClassroom());
+
+         response.add(dto);
+        }
+
+        logger.info("Found {} timetable for the day{}", response.size(), day);
+       return response;
+    }
+
+    // Get timetable by classroom
+    public List<TimetableResponseDTO> getTimetableByClassroom(String classroom) {
+        logger.info("Fetching timetable for classroom:{}",classroom);
+        List<Timetable> timetables= timetableRepository.findByClassroom(classroom);
+        logger.info("Records found: {}", timetables.size());
+
+        //throw exception
+        if(timetables.isEmpty()){
+            throw new ResourceNotFoundException("timetable not foud for this classroom:"+classroom);
+        }
+
+        //Entity -> DTO
+        List<TimetableResponseDTO>  response =new ArrayList<>();
+        for(Timetable timetable: timetables){
+            TimetableResponseDTO dto = new TimetableResponseDTO();
+
+            dto .setTimetableId(timetable.getTimetableId());
+            dto.setDay(timetable.getDay());
+            dto.setStartTime(timetable.getStartTime());
+            dto.setEndTime(timetable.getEndTime());
+            dto.setBatchName(timetable.getBatch().getBatchName());
+            dto.setSubjectName(timetable.getSubject().getSubjectName());
+            dto.setTeacherName(timetable.getTeacher().getName());
+            dto.setClassroom(timetable.getClassroom());
+
+            response.add(dto);
+        }
+
+        logger.info("Found {} timetable for the classroom{}", response.size(), classroom);
+        return response;
+    }
+
+//Get timetable by Time range
+    public List<TimetableResponseDTO> getTimetableByTimeRange( LocalTime startTime,  LocalTime endTime ){
+
+        logger.info("Fetching timetables for time rage: {}-{}",startTime,endTime);
+
+        List<Timetable> timetables =
+                timetableRepository.findTimetableByTimeRange(startTime,endTime);
+        if (timetables.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No timetable found for time range : " + startTime+"-"+endTime);
+        }
+        List<TimetableResponseDTO> responses = new ArrayList<>();
+
+        for (Timetable timetable : timetables) {
+
+            TimetableResponseDTO response = new TimetableResponseDTO();
+
+            response.setTimetableId(timetable.getTimetableId());
+            response.setDay(timetable.getDay());
+            response.setStartTime(timetable.getStartTime());
+            response.setEndTime(timetable.getEndTime());
+            response.setTeacherName(timetable.getTeacher().getName());
+            response.setBatchName(timetable.getBatch().getBatchName());
+            response.setSubjectName(timetable.getSubject().getSubjectName());
+            response.setClassroom(timetable.getClassroom());
+
+            responses.add(response);
+        }
+
+        logger.info("Found {} timetable(s) for time range: {}-{}", responses.size(), startTime,endTime);
+        return responses;
+    }
+
+// fetching timetable for today=day
+public List<TimetableResponseDTO> getTodayTimetable() {
+
+
+    DayOfWeek today = LocalDate.now().getDayOfWeek();
+
+    logger.info("Fetching timetable for today: {}", today);
+
+    // Fetch today's timetables
+    List<Timetable> timetables = timetableRepository.findByDay(today);
+    if (timetables.isEmpty()) {
+        throw new ResourceNotFoundException(
+                "No timetable found for today: " + today
+        );
+    }
+
+
+    //Entity -> DTO
+    List<TimetableResponseDTO>  response =new ArrayList<>();
+    for(Timetable timetable: timetables){
+        TimetableResponseDTO dto = new TimetableResponseDTO();
+
+        dto.setTimetableId(timetable.getTimetableId());
+        dto.setDay(timetable.getDay());
+        dto.setStartTime(timetable.getStartTime());
+        dto.setEndTime(timetable.getEndTime());
+        dto.setBatchName(timetable.getBatch().getBatchName());
+        dto.setSubjectName(timetable.getSubject().getSubjectName());
+        dto.setTeacherName(timetable.getTeacher().getName());
+        dto.setClassroom(timetable.getClassroom());
+
+        response.add(dto);
+    }
+
+    logger.info("Found {} timetable for today: {}", response.size(), today);
+    return response;
+}
+
+//get timetable for Teacher + day
+public List<TimetableResponseDTO> getTimetableByTeacherAndDay(
+        Long teacherId,
+        DayOfWeek day){
+    logger.info("Fetching timetables by teacher and day: {}-{}",teacherId,day);
+
+    List<Timetable> timetables =
+            timetableRepository.findByTeacher_TeacherIdAndDay(
+                    teacherId,
+                    day
+            );
+    if (timetables.isEmpty()) {
+        throw new ResourceNotFoundException(
+                "No timetable found for teacherId & day: " + teacherId+"-"+day
+        );
+    }
+
+    //Entity -> DTO
+    List<TimetableResponseDTO>  response =new ArrayList<>();
+    for(Timetable timetable: timetables){
+        TimetableResponseDTO dto = new TimetableResponseDTO();
+
+        dto.setTimetableId(timetable.getTimetableId());
+        dto.setDay(timetable.getDay());
+        dto.setStartTime(timetable.getStartTime());
+        dto.setEndTime(timetable.getEndTime());
+        dto.setBatchName(timetable.getBatch().getBatchName());
+        dto.setSubjectName(timetable.getSubject().getSubjectName());
+        dto.setTeacherName(timetable.getTeacher().getName());
+        dto.setClassroom(timetable.getClassroom());
+
+        response.add(dto);
+    }
+
+    logger.info("Found {} timetable for today: {}-{}", response.size(), teacherId,day);
+    return response;
+}
+
+    //get timetable for Teacher + day
+    public List<TimetableResponseDTO> getTimetableByBatchAndDay(
+            Long batchId,
+            DayOfWeek day){
+        logger.info("Fetching timetables by batch and day: {}-{}",batchId,day);
+
+        List<Timetable> timetables =
+                timetableRepository.findByBatch_BatchIdAndDay(
+                        batchId,
+                        day
+                );
+        if (timetables.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No timetable found for batchId & day: " + batchId+"-"+day
+            );
+        }
+
+        //Entity -> DTO
+        List<TimetableResponseDTO>  response =new ArrayList<>();
+        for(Timetable timetable: timetables){
+            TimetableResponseDTO dto = new TimetableResponseDTO();
+
+            dto.setTimetableId(timetable.getTimetableId());
+            dto.setDay(timetable.getDay());
+            dto.setStartTime(timetable.getStartTime());
+            dto.setEndTime(timetable.getEndTime());
+            dto.setBatchName(timetable.getBatch().getBatchName());
+            dto.setSubjectName(timetable.getSubject().getSubjectName());
+            dto.setTeacherName(timetable.getTeacher().getName());
+            dto.setClassroom(timetable.getClassroom());
+
+            response.add(dto);
+        }
+
+        logger.info("Found {} timetable for today: {}-{}", response.size(), batchId,day);
+        return response;
+    }
+
 
     public TimetableResponseDTO updateTimetable(Long id, TimetableRequestDTO requestDTO){
         Timetable timetable = timetableRepository.findById(id)
