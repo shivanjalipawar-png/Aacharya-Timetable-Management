@@ -15,8 +15,12 @@ import com.aacharya.timetablemanagement.repository.TimetableRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Pageable;
+
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -171,26 +175,30 @@ public class TimetableService {
         return response;
     }
 
-    public List<TimetableResponseDTO> getAllTimetables(){
-        List<Timetable> timetables = timetableRepository.findAll();
-        List<TimetableResponseDTO> timetableResponseDTOArrayList = new ArrayList<>();
+    public Page<TimetableResponseDTO> getAllTimetables(Pageable pageable){
 
-        for(Timetable timetable : timetables){
-            TimetableResponseDTO response = new TimetableResponseDTO();
+        logger.info("Fetching timetables - Page: {}, Size: {}",
+                pageable.getPageNumber(),
+                pageable.getPageSize());
 
-            response.setTimetableId(timetable.getTimetableId());
-            response.setDay(timetable.getDay());
-            response.setStartTime(timetable.getStartTime());
-            response.setEndTime(timetable.getEndTime());
-            response.setTeacherName(timetable.getTeacher().getName());
-            response.setBatchName(timetable.getBatch().getBatchName());
-            response.setSubjectName(timetable.getSubject().getSubjectName());
-            response.setClassroom(timetable.getClassroom());
+        Page<Timetable> timetables = timetableRepository.findAll(pageable);
 
-            timetableResponseDTOArrayList.add(response);
+        Page<TimetableResponseDTO> response =
+                timetables.map(timetable -> {
+                    TimetableResponseDTO dto = new TimetableResponseDTO();
 
-        }
-        return timetableResponseDTOArrayList;
+                    dto.setTimetableId(timetable.getTimetableId());
+                    dto.setDay(timetable.getDay());
+                    dto.setStartTime(timetable.getStartTime());
+                    dto.setEndTime(timetable.getEndTime());
+                    dto.setTeacherName(timetable.getTeacher().getName());
+                    dto.setBatchName(timetable.getBatch().getBatchName());
+                    dto.setSubjectName(timetable.getSubject().getSubjectName());
+                    dto.setClassroom(timetable.getClassroom());
+
+                    return dto;
+                });
+        return response;
 
     }
 
