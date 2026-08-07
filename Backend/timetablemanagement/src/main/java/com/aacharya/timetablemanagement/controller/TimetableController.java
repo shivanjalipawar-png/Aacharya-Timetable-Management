@@ -220,6 +220,9 @@ public class TimetableController {
         return  ResponseEntity.status(HttpStatus.OK).body(timetables);
     }
 
+    //=========
+    // Pagination
+    //==========
 //Get timetable by Time range
 @Operation(
         summary = "Get timetables by time range ",
@@ -306,10 +309,36 @@ public ResponseEntity<List<TimetableResponseDTO>> getTimetableByBatchAndDay(
     return ResponseEntity.ok(timetables);
 }
 
+//Dynamic API  testing
+    //1. Filter by teacher + Batch
+
+    @Operation(
+            summary = "Filter timetables",
+            description = "Returns timetables based on optional teacherId and batchId filters."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Filtered timetables retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "No timetable found for the given filters")
+    })
+    @GetMapping("/filter")
+    public ResponseEntity<List<TimetableResponseDTO>> getFilteredTimetables(
+
+            @RequestParam(required = false) Long teacherId,
+
+            @RequestParam(required = false) Long batchId) {
+
+        List<TimetableResponseDTO> timetables =
+                timetableService.getFilteredTimetables(teacherId, batchId);
+
+        return ResponseEntity.ok(timetables);
+    }
 
 
 
-//Update timetable
+
+
+
+    //Update timetable
     @Operation(
             summary = "Update timetable",
             description = "Updates the timetable corresponding to the specified timetable ID."

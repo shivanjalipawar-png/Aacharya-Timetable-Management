@@ -37,6 +37,7 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long>{
             Long batchId,
             DayOfWeek day
     );
+    List<Timetable> findByTeacher(Long teacherId);
 
 
 
@@ -178,6 +179,30 @@ WHERE (
             @Param("endTime") LocalTime endTime
     );
 
-
+    // Dynamic APIS
+    //1. filter teacher by id
+/*
+    @Query("""
+    SELECT t
+    FROM Timetable t
+    WHERE t.teacher.teacherId = :teacherId
+""")
+    List<Timetable> filterByTeacher(
+            @Param("teacherId") Long teacherId
+    );
+*/
+    //2. Filtering teacher+batch using their Ids
+    @Query("""
+    SELECT t
+    FROM Timetable t
+    WHERE
+    (:teacherId IS NULL OR t.teacher.teacherId = :teacherId)
+    AND
+    (:batchId IS NULL OR t.batch.batchId = :batchId)
+""")
+    List<Timetable> filterTimetables(
+            @Param("teacherId") Long teacherId,
+            @Param("batchId") Long batchId
+    );
 
 }

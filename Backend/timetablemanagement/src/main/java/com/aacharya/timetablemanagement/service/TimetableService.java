@@ -202,7 +202,7 @@ public class TimetableService {
 
     }
 
-
+// We reuse this method dor dynamic APIs
     public List<TimetableResponseDTO> getTimetableByTeacher(Long teacherId){
 
         logger.info("Fetching timetables for teacher id: {}", teacherId);
@@ -233,6 +233,59 @@ public class TimetableService {
         logger.info("Found {} timetable(s) for teacher id: {}", responses.size(), teacherId);
         return responses;
     }
+// ----Filtering method  for Dynamic APIs ----
+// Dynamic Filtering API - //Filter by Batch+Teacher
+public List<TimetableResponseDTO> getFilteredTimetables(
+        Long teacherId,
+        Long batchId){
+
+    logger.info("Filtering timetables for teacherId and batchId: {}-{}", teacherId, batchId);
+
+    // Call JPQL repository method
+    List<Timetable> timetables = timetableRepository.filterTimetables(teacherId,batchId);
+
+
+    if (timetables.isEmpty()) {
+        throw new ResourceNotFoundException(
+                "No timetable found for teacherId=" + teacherId +
+                        ", batchId=" + batchId
+        );
+    }
+
+    // Entity -> DTO
+    List<TimetableResponseDTO> responses = new ArrayList<>();
+
+    for (Timetable timetable : timetables) {
+
+        TimetableResponseDTO response = new TimetableResponseDTO();
+
+        response.setTimetableId(timetable.getTimetableId());
+        response.setDay(timetable.getDay());
+        response.setStartTime(timetable.getStartTime());
+        response.setEndTime(timetable.getEndTime());
+        response.setTeacherName(timetable.getTeacher().getName());
+        response.setBatchName(timetable.getBatch().getBatchName());
+        response.setSubjectName(timetable.getSubject().getSubjectName());
+        response.setClassroom(timetable.getClassroom());
+
+        responses.add(response);
+    }
+
+    logger.info("Found {} filtered timetable(s) for teacherId and batchId: {} - {}",
+            responses.size(), teacherId,batchId);
+
+    return responses;
+}
+
+
+
+
+
+
+
+
+
+
 
 
     //timetable By batchId
@@ -535,6 +588,25 @@ public List<TimetableResponseDTO> getTimetableByTeacherAndDay(
         logger.info("Found {} timetable for today: {}-{}", response.size(), batchId,day);
         return response;
     }
+
+    //====== Dynamic Filtering APIs =======
+   //1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public TimetableResponseDTO updateTimetable(Long id, TimetableRequestDTO requestDTO){
