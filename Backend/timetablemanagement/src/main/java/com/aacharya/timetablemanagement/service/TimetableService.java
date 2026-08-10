@@ -234,21 +234,21 @@ public class TimetableService {
         return responses;
     }
 // ----Filtering method  for Dynamic APIs ----
-// Dynamic Filtering API - //Filter by Batch+Teacher
+// Dynamic Filtering API - //Filter by Batch+Teacher+Day+Subject+classroom_Classroom
 public List<TimetableResponseDTO> getFilteredTimetables(
         Long teacherId,
-        Long batchId){
+        Long batchId, DayOfWeek day, Long subjectId , String classroom){
 
-    logger.info("Filtering timetables for teacherId and batchId: {}-{}", teacherId, batchId);
+    logger.info("Filtering timetables for teacherId and batchId: {}-{}-{}-{}-{}", teacherId, batchId,day,subjectId,classroom);
 
     // Call JPQL repository method
-    List<Timetable> timetables = timetableRepository.filterTimetables(teacherId,batchId);
+    List<Timetable> timetables = timetableRepository.filterTimetables(teacherId,batchId,day,subjectId,classroom);
 
 
     if (timetables.isEmpty()) {
         throw new ResourceNotFoundException(
                 "No timetable found for teacherId=" + teacherId +
-                        ", batchId=" + batchId
+                        ", batchId=" + batchId +"day="+day +"subjectId="+subjectId +"classroom=" + classroom
         );
     }
 
@@ -271,13 +271,11 @@ public List<TimetableResponseDTO> getFilteredTimetables(
         responses.add(response);
     }
 
-    logger.info("Found {} filtered timetable(s) for teacherId and batchId: {} - {}",
-            responses.size(), teacherId,batchId);
+    logger.info("Found {} filtered timetable(s) for teacherId ,batchId,day, subjectId and classroom: {} - {} -{}-{} -{}",
+            responses.size(), teacherId,batchId,day,subjectId,classroom);
 
     return responses;
 }
-
-
 
 
 

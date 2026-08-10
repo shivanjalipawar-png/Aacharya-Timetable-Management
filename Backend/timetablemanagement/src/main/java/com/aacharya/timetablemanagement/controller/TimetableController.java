@@ -310,11 +310,11 @@ public ResponseEntity<List<TimetableResponseDTO>> getTimetableByBatchAndDay(
 }
 
 //Dynamic API  testing
-    //1. Filter by teacher + Batch
+    //1. Filter by teacher + Batch +day
 
     @Operation(
             summary = "Filter timetables",
-            description = "Returns timetables based on optional teacherId and batchId filters."
+            description = "Returns timetables based on optional teacherId, batchId,day, subjectId and classroomfilters."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Filtered timetables retrieved successfully"),
@@ -325,10 +325,16 @@ public ResponseEntity<List<TimetableResponseDTO>> getTimetableByBatchAndDay(
 
             @RequestParam(required = false) Long teacherId,
 
-            @RequestParam(required = false) Long batchId) {
+            @RequestParam(required = false) Long batchId,
+
+            @RequestParam(required = false) DayOfWeek day,
+
+            @RequestParam(required=false) Long subjectId ,
+
+            @RequestParam(required = false) String classroom){
 
         List<TimetableResponseDTO> timetables =
-                timetableService.getFilteredTimetables(teacherId, batchId);
+                timetableService.getFilteredTimetables(teacherId, batchId,day,subjectId,classroom );
 
         return ResponseEntity.ok(timetables);
     }

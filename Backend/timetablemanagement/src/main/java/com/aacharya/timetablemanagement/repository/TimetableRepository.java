@@ -191,7 +191,7 @@ WHERE (
             @Param("teacherId") Long teacherId
     );
 */
-    //2. Filtering teacher+batch using their Ids
+    //2. Filtering teacher+batch+day using their Ids
     @Query("""
     SELECT t
     FROM Timetable t
@@ -199,10 +199,18 @@ WHERE (
     (:teacherId IS NULL OR t.teacher.teacherId = :teacherId)
     AND
     (:batchId IS NULL OR t.batch.batchId = :batchId)
+    AND
+    (:day IS NULL OR t.day = :day)
+    AND (:subjectId IS NULL OR t.subject.subjectId = :subjectId)
+    AND (:classroom IS NULL OR t.classroom = :classroom)
 """)
     List<Timetable> filterTimetables(
             @Param("teacherId") Long teacherId,
-            @Param("batchId") Long batchId
+            @Param("batchId") Long batchId,
+            @Param("day") DayOfWeek day,
+            @Param("subjectId") Long subjectId,
+            @Param("classroom")String classroom
     );
+
 
 }
