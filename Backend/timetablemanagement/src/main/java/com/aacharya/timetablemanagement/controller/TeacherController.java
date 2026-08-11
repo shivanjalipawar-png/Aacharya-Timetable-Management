@@ -1,5 +1,6 @@
 package com.aacharya.timetablemanagement.controller;
 
+import com.aacharya.timetablemanagement.dto.TimetableResponseDTO;
 import com.aacharya.timetablemanagement.service.TeacherService;
 import com.aacharya.timetablemanagement.dto.TeacherRequestDTO;
 import com.aacharya.timetablemanagement.dto.TeacherResponseDTO;
@@ -84,6 +85,42 @@ public class TeacherController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(teacher);
     }
+
+
+    //For filtering methods
+// get teacher by specialization +qualification + batchId
+   @Operation(
+    summary = "Get teachers by specialization,qualification,batchId",
+    description = "Returns all teachers having the specified specialization,qualification,batchId."
+            )
+   @ApiResponse(
+           responseCode = "200",
+           description = "Teacher retrieved successfully"
+   )
+   @ApiResponse(
+           responseCode = "404",
+           description = "No teacher found for the specified specialization,qualification,batchId"
+   )
+    @GetMapping("/filter")
+    public ResponseEntity<List<TeacherResponseDTO>> getFilteredTeachers(
+           @RequestParam(required = false) String specialization,
+           @RequestParam(required = false) String qualification,
+           @RequestParam(required = false) Long batchId
+    ){
+        List<TeacherResponseDTO> teachers = teacherService.getFilteredTeachers(specialization,qualification,batchId );
+        return  ResponseEntity.status(HttpStatus.OK).body(teachers);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Operation(

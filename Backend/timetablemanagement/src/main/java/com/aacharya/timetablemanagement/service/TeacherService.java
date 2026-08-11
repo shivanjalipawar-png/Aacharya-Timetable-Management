@@ -1,6 +1,8 @@
 package com.aacharya.timetablemanagement.service;
 
+import com.aacharya.timetablemanagement.dto.TimetableResponseDTO;
 import com.aacharya.timetablemanagement.entity.Teacher;
+import com.aacharya.timetablemanagement.entity.Timetable;
 import com.aacharya.timetablemanagement.repository.TeacherRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,6 +108,65 @@ public class TeacherService {
 
         return response;
     }
+
+    //------ Filtering methods --------
+    // Get teacher by specialization
+    //------ Filtering methods --------
+
+    // 1.Get teacher by specialization +qualification +batchId
+    public List<TeacherResponseDTO> getFilteredTeachers(String specialization,String qualification,Long batchId) {
+
+        logger.info("Fetching teachers with specialization,qualification,batchId: {} - {} - {}", specialization, qualification,batchId);
+
+        List<Teacher> teachers =
+                teacherRepository.filterTeachers(specialization, qualification,batchId);
+
+        logger.info("Records found: {}", teachers.size());
+
+        // Throw exception if no teachers found
+        if (teachers.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No teacher found for specialization=" + specialization
+                            + ", qualification=" + qualification
+                            + ", batchId=" + batchId
+            );
+        }
+
+        // Entity -> DTO
+        List<TeacherResponseDTO> response = new ArrayList<>();
+
+        for (Teacher teacher : teachers) {
+
+            TeacherResponseDTO dto = new TeacherResponseDTO();
+
+            dto.setTeacherId(teacher.getTeacherId());
+            dto.setTeacherName(teacher.getName());
+            dto.setEmail(teacher.getEmail());
+            dto.setPhone(teacher.getPhone());
+            dto.setQualification(teacher.getQualification());
+            dto.setSpecialization(teacher.getSpecialization());
+            if (teacher.getBatch() != null) {
+                dto.setBatchName(teacher.getBatch().getBatchName());
+            } else {
+                dto.setBatchName(null);
+            }
+            response.add(dto);
+        }
+
+        logger.info(
+                "Found {} teacher(s) with specialization , qualification,batchId: {}- {} - {}",
+                response.size(),
+                specialization , qualification, batchId
+        );
+
+        return response;
+    }
+
+
+
+
+
+
 
     public TeacherResponseDTO updateTeacher(
             Long id,
