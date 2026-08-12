@@ -93,6 +93,128 @@ public class BatchService {
         return response;
     }
 
+    //====== Filtering methods =======
+// Get batches by course
+    public List<BatchResponseDTO> getBatchByCourse(String course) {
+
+        logger.info("Fetching batches for course: {}", course);
+
+        List<Batch> batches = batchRepository.findByCourse(course);
+
+        logger.info("Records found: {}", batches.size());
+
+        if (batches.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No batch found for course: " + course
+            );
+        }
+
+        List<BatchResponseDTO> responses = new ArrayList<>();
+
+        for (Batch batch : batches) {
+
+            BatchResponseDTO dto = new BatchResponseDTO();
+
+            dto.setBatchId(batch.getBatchId());
+            dto.setBatchName(batch.getBatchName());
+            dto.setCourse(batch.getCourse());
+
+            responses.add(dto);
+        }
+
+        logger.info(
+                "Found {} batch(es) for course: {}",
+                responses.size(),
+                course
+        );
+
+        return responses;
+    }
+
+    // Get batches by batch name
+    public List<BatchResponseDTO> getBatchByName(String batchName) {
+
+        logger.info("Fetching batches for batch name: {}", batchName);
+
+        List<Batch> batches = batchRepository.findByBatchName(batchName);
+
+        logger.info("Records found: {}", batches.size());
+
+        if (batches.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No batch found for batch name: " + batchName
+            );
+        }
+
+        List<BatchResponseDTO> responses = new ArrayList<>();
+
+        for (Batch batch : batches) {
+
+            BatchResponseDTO dto = new BatchResponseDTO();
+
+            dto.setBatchId(batch.getBatchId());
+            dto.setBatchName(batch.getBatchName());
+            dto.setCourse(batch.getCourse());
+
+            responses.add(dto);
+        }
+
+        logger.info(
+                "Found {} batch(es) for batch name: {}",
+                responses.size(),
+                batchName
+        );
+
+        return responses;
+    }
+
+    // Dynamic filtering by batch name + course
+    public List<BatchResponseDTO> getFilteredBatches(
+            String batchName,
+            String course) {
+
+        logger.info(
+                "Filtering batches by batchName and course: {} - {}",
+                batchName,
+                course
+        );
+
+        List<Batch> batches =
+                batchRepository.filterBatches(batchName, course);
+
+        logger.info("Records found: {}", batches.size());
+
+        if (batches.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No batch found for batchName=" + batchName +
+                            ", course=" + course
+            );
+        }
+
+        List<BatchResponseDTO> responses = new ArrayList<>();
+
+        for (Batch batch : batches) {
+
+            BatchResponseDTO dto = new BatchResponseDTO();
+
+            dto.setBatchId(batch.getBatchId());
+            dto.setBatchName(batch.getBatchName());
+            dto.setCourse(batch.getCourse());
+
+            responses.add(dto);
+        }
+
+        logger.info(
+                "Found {} filtered batch(es) for batchName={} and course={}",
+                responses.size(),
+                batchName,
+                course
+        );
+
+        return responses;
+    }
+    //Get
+
 
 
     public BatchResponseDTO updateBatch(Long id, BatchRequestDTO requestDTO ) {

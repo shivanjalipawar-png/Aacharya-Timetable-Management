@@ -1,9 +1,6 @@
 package com.aacharya.timetablemanagement.controller;
 
-import com.aacharya.timetablemanagement.dto.BatchRequestDTO;
-import com.aacharya.timetablemanagement.dto.BatchResponseDTO;
-import com.aacharya.timetablemanagement.dto.SubjectRequestDTO;
-import com.aacharya.timetablemanagement.dto.SubjectResponseDTO;
+import com.aacharya.timetablemanagement.dto.*;
 import com.aacharya.timetablemanagement.entity.Batch;
 import com.aacharya.timetablemanagement.repository.BatchRepository;
 import com.aacharya.timetablemanagement.service.BatchService;
@@ -88,6 +85,89 @@ public class BatchController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);
     }
+
+    //----- Filtering Methods-----
+  // Get batch by course
+    @Operation(
+            summary = "Get batch by course",
+            description = "Returns the batch corresponding to the specified course."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Batch retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Batch not found for the specified course.")
+    })
+    @GetMapping("/course/{course}")
+    public ResponseEntity<List<BatchResponseDTO>> getBatchByCourse(
+            @PathVariable String course) {
+
+        List<BatchResponseDTO> batches =
+                batchService.getBatchByCourse(course);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(batches);
+    }
+
+    //Get batch by name
+    @Operation(
+            summary = "Get batch by name",
+            description = "Returns the batch corresponding to the specified name."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Batch retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Batch not found for the specified name.")
+    })
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<BatchResponseDTO>> getBatchByName(
+            @PathVariable String name) {
+
+        List<BatchResponseDTO> batches =
+                batchService.getBatchByName(name);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(batches);
+    }
+    // get teacher by name + course
+    @Operation(
+            summary = "Get batch by name and course",
+            description = "Returns all batches having the specified name and course."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Batch retrieved successfully"
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "No batch found for the specified name and course"
+    )
+    @GetMapping("/filter")
+    public ResponseEntity<List<BatchResponseDTO>> getFilteredBatches(
+            @RequestParam(required = false) String batchName,
+            @RequestParam(required = false) String course
+    ){
+        List<BatchResponseDTO> batches = batchService.getFilteredBatches(batchName,course );
+        return  ResponseEntity.status(HttpStatus.OK).body(batches);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Operation(

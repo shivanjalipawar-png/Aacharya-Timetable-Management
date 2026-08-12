@@ -21,15 +21,15 @@ public class Subject {
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    private String SubjectCode;
+    private String subjectCode;
     private Integer credits;
 
     public String getSubjectCode() {
-        return SubjectCode;
+        return subjectCode;
     }
 
     public void setSubjectCode(String subjectCode) {
-        SubjectCode = subjectCode;
+        subjectCode = subjectCode;
     }
 
     public Integer getCredits() {
