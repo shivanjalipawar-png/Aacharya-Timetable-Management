@@ -171,12 +171,6 @@ public ResponseEntity<List<SubjectResponseDTO>> getFilteredSubjects(
 }
 
 
-
-
-
-
-
-
 @Operation(
         summary="Update subject .",
         description = "Updates the subject corresponding to the specified subject ID."
