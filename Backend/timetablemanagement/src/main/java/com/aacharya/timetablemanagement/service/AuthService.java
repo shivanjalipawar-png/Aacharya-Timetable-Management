@@ -1,8 +1,11 @@
 package com.aacharya.timetablemanagement.service;
 
 
+import com.aacharya.timetablemanagement.dto.LoginRequestDTO;
 import com.aacharya.timetablemanagement.entity.User;
 import com.aacharya.timetablemanagement.repository.UserRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +13,17 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     // Constructor Injection → Inject required dependencies
     public AuthService(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager=authenticationManager;
     }
     // User Registration -> Handles registration logic
     public User registerUser(User user) {
@@ -45,6 +51,18 @@ public class AuthService {
         return userRepository.save(user);
     }
 
+    // User Login → Verify username and password
+    public void loginUser(LoginRequestDTO loginRequest) {
 
+        // Create Token → Store login credentials
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                );
+
+        // Authenticate User → Verify credentials
+        authenticationManager.authenticate(authenticationToken);
+    }
 
 }

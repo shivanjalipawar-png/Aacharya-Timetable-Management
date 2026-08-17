@@ -1,5 +1,6 @@
 package com.aacharya.timetablemanagement.controller;
 
+import com.aacharya.timetablemanagement.dto.LoginRequestDTO;
 import com.aacharya.timetablemanagement.entity.User;
 import com.aacharya.timetablemanagement.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,19 @@ public class AuthController {
         return new ResponseEntity<>(
                 registeredUser,
                 HttpStatus.CREATED
+        );
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(
+            @RequestBody LoginRequestDTO loginRequest) {
+
+        authService.loginUser(loginRequest);
+
+
+        return new ResponseEntity<>(
+                "Login successful",
+                HttpStatus.OK
         );
     }
 }
