@@ -14,17 +14,23 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     // Constructor Injection → Inject required dependencies
     public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager) {
+            AuthenticationManager authenticationManager,
+            JwtService jwtService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager=authenticationManager;
+        this.jwtService=jwtService;
+
     }
+
+
     // User Registration -> Handles registration logic
     public User registerUser(User user) {
 
@@ -52,9 +58,9 @@ public class AuthService {
     }
 
     // User Login → Verify username and password
-    public void loginUser(LoginRequestDTO loginRequest) {
+    public String loginUser(LoginRequestDTO loginRequest){
 
-        // Create Token → Store login credentials
+        // Authentication Token → Store login credentials
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -63,6 +69,10 @@ public class AuthService {
 
         // Authenticate User → Verify credentials
         authenticationManager.authenticate(authenticationToken);
+
+        String token = jwtService.generateToken(loginRequest.getUsername());
+
+        return token;
     }
 
 }

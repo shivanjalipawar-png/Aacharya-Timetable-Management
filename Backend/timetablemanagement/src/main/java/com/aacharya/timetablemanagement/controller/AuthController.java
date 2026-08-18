@@ -38,11 +38,11 @@ public class AuthController {
     public ResponseEntity<String> loginUser(
             @RequestBody LoginRequestDTO loginRequest) {
 
-        authService.loginUser(loginRequest);
-
+        // Login → Authenticate user and generate JWT
+        String token = authService.loginUser(loginRequest);
 
         return new ResponseEntity<>(
-                "Login successful",
+                token,
                 HttpStatus.OK
         );
     }
