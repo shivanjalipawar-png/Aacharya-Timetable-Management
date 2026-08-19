@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class PasswordConfig {
 
     private final CustomUserDetailsService userDetailsService;
@@ -89,6 +89,10 @@ public class PasswordConfig {
 
                 .authorizeHttpRequests(auth ->
                         auth
+
+
+                                // ================= PUBLIC APIs =================
+
                                 .requestMatchers(
                                         "/api/auth/**",
                                         "/swagger-ui/**",
@@ -97,21 +101,80 @@ public class PasswordConfig {
                                 )
                                 .permitAll()
 
+
+                                // ================= BATCH =================
+
+                                 // ADMIN only → Create
                                 .requestMatchers(HttpMethod.POST, "/batches")
                                 .hasRole("ADMIN")
 
+                               // ADMIN only → Update
                                 .requestMatchers(HttpMethod.PUT, "/batches/**")
                                 .hasRole("ADMIN")
 
+                                // ADMIN only → Delete
                                 .requestMatchers(HttpMethod.DELETE, "/batches/**")
                                 .hasRole("ADMIN")
 
+                                   // ADMIN / TEACHER / STUDENT → Read
                                 .requestMatchers(HttpMethod.GET, "/batches/**")
-                                .hasAnyRole(
-                                        "ADMIN",
-                                        "TEACHER",
-                                        "STUDENT"
-                                )
+                                .hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+
+                                   // ================= SUBJECT =================
+
+                                  // ADMIN only → Create
+                                .requestMatchers(HttpMethod.POST, "/subjects")
+                                .hasRole("ADMIN")
+
+                               // ADMIN only → Update
+                                .requestMatchers(HttpMethod.PUT, "/subjects/**")
+                                .hasRole("ADMIN")
+
+                               // ADMIN only → Delete
+                                .requestMatchers(HttpMethod.DELETE, "/subjects/**")
+                                .hasRole("ADMIN")
+
+                              // ADMIN / TEACHER / STUDENT → Read
+                                .requestMatchers(HttpMethod.GET, "/subjects/**")
+                                .hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+
+                              // ================= TEACHER =================
+
+                               // ADMIN only → Create
+                                .requestMatchers(HttpMethod.POST, "/teachers")
+                                .hasRole("ADMIN")
+
+                                // ADMIN only → Update
+                                .requestMatchers(HttpMethod.PUT, "/teachers/**")
+                                .hasRole("ADMIN")
+
+                               // ADMIN only → Delete
+                                .requestMatchers(HttpMethod.DELETE, "/teachers/**")
+                                .hasRole("ADMIN")
+
+                               // ADMIN / TEACHER / STUDENT → Read
+                                .requestMatchers(HttpMethod.GET, "/teachers/**")
+                                .hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+
+                           // ================= TIMETABLE =================
+                                // ADMIN only → Create
+                                .requestMatchers(HttpMethod.POST, "/api/timetables")
+                                .hasRole("ADMIN")
+
+                                 // ADMIN only → Update
+                                .requestMatchers(HttpMethod.PUT, "/api/timetables/**")
+                                .hasRole("ADMIN")
+
+                                // ADMIN only → Delete
+                                .requestMatchers(HttpMethod.DELETE, "/api/timetables/**")
+                                .hasRole("ADMIN")
+
+                                // ADMIN / TEACHER / STUDENT → Read
+                                .requestMatchers(HttpMethod.GET, "/api/timetables/**")
+                                .hasAnyRole("ADMIN", "TEACHER", "STUDENT")
 
                                 .anyRequest()
                                 .authenticated()
