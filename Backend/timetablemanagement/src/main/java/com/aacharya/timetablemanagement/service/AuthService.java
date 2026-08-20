@@ -70,9 +70,9 @@ public class AuthService {
         // Authenticate User → Verify credentials
         authenticationManager.authenticate(authenticationToken);
 
-        String token = jwtService.generateToken(loginRequest.getUsername());
-
-        return token;
+        return jwtService.generateToken(
+                loginRequest.getUsername()
+        );
     }
 
 }

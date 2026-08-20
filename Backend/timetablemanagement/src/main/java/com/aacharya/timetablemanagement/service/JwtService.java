@@ -26,17 +26,16 @@ public class JwtService {
 
     public String generateToken(String username) {
 
-        SecretKey secretKey =
-                Keys.hmacShaKeyFor(
-                        secret.getBytes(StandardCharsets.UTF_8)
-                );
-
-        return Jwts.builder().subject(username).issuedAt(new Date()).expiration(
-                new Date(
-                        System.currentTimeMillis() + 30L * 60 * 1000
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(new Date())
+                .expiration(
+                        new Date(
+                                System.currentTimeMillis() + 30L * 60 * 1000
+                        )
                 )
-        ).signWith(secretKey).compact();
-
+                .signWith(getSigningKey())
+                .compact();
     }
 
     //----Method to extract username from JWT----

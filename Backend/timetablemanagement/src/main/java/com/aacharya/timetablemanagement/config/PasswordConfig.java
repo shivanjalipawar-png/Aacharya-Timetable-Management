@@ -27,7 +27,7 @@ public class PasswordConfig {
                           JwtAuthenticationFilter jwtAuthenticationFilter) {
 
         this.userDetailsService = userDetailsService;
-        this.jwtAuthenticationFilter =jwtAuthenticationFilter;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     // Password Bean → Creates BCrypt encoder

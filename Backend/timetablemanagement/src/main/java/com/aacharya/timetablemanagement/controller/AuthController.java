@@ -1,6 +1,7 @@
 package com.aacharya.timetablemanagement.controller;
 
 import com.aacharya.timetablemanagement.dto.LoginRequestDTO;
+import com.aacharya.timetablemanagement.dto.UserResponseDTO;
 import com.aacharya.timetablemanagement.entity.User;
 import com.aacharya.timetablemanagement.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -20,16 +21,21 @@ public class AuthController {
 
     // Register User → Create new user
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(
+    public ResponseEntity<UserResponseDTO> registerUser(
             @RequestBody User user) {
 
-        // Call Service → Process registration
         User registeredUser =
                 authService.registerUser(user);
 
-        // Return Response → Send HTTP 201
+        UserResponseDTO response =
+                new UserResponseDTO(
+                        registeredUser.getUserId(),
+                        registeredUser.getUsername(),
+                        registeredUser.getRole()
+                );
+
         return new ResponseEntity<>(
-                registeredUser,
+                response,
                 HttpStatus.CREATED
         );
     }
