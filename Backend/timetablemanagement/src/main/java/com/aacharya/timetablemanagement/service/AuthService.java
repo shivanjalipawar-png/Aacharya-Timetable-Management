@@ -3,6 +3,7 @@ package com.aacharya.timetablemanagement.service;
 
 import com.aacharya.timetablemanagement.dto.LoginRequestDTO;
 import com.aacharya.timetablemanagement.entity.User;
+import com.aacharya.timetablemanagement.exception.ConflictException;
 import com.aacharya.timetablemanagement.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,7 +43,7 @@ public class AuthService {
 
         // Duplicate Check → Prevent duplicate username
         if (existingUser != null) {
-            throw new RuntimeException(
+            throw new ConflictException(
                     "Username already exists"
             );
         }
