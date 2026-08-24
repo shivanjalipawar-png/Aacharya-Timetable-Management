@@ -3,6 +3,7 @@ package com.aacharya.timetablemanagement.controller;
 
 import com.aacharya.timetablemanagement.dto.SubjectRequestDTO;
 import com.aacharya.timetablemanagement.dto.SubjectResponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 )
 @RestController
 @RequestMapping("/subjects")
+@SecurityRequirement(name = "bearerAuth")
 public class SubjectController {
 @Autowired
     private  SubjectService subjectService;

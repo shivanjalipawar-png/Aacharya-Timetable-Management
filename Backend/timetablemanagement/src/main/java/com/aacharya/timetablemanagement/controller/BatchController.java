@@ -5,6 +5,7 @@ import com.aacharya.timetablemanagement.entity.Batch;
 import com.aacharya.timetablemanagement.repository.BatchRepository;
 import com.aacharya.timetablemanagement.service.BatchService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 )
 @RestController
 @RequestMapping("/batches")
+@SecurityRequirement(name = "bearerAuth")
 public class BatchController {
 
     @Autowired

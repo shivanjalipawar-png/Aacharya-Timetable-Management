@@ -6,6 +6,7 @@ import com.aacharya.timetablemanagement.service.TimetableService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import java.util.List;
 @Tag(name = "Timetable Controller", description = "APIs for managing timetables")
 @RestController
 @RequestMapping("/api/timetables")
+@SecurityRequirement(name = "bearerAuth")
 public class TimetableController {
 
     @Autowired

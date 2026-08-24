@@ -5,6 +5,7 @@ import com.aacharya.timetablemanagement.service.TeacherService;
 import com.aacharya.timetablemanagement.dto.TeacherRequestDTO;
 import com.aacharya.timetablemanagement.dto.TeacherResponseDTO;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 )
 @RestController
 @RequestMapping("/teachers")
+@SecurityRequirement(name = "bearerAuth")
 public class TeacherController {
 
     @Autowired
