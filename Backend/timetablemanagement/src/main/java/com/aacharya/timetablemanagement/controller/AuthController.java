@@ -1,9 +1,10 @@
 package com.aacharya.timetablemanagement.controller;
 
 import com.aacharya.timetablemanagement.dto.LoginRequestDTO;
+import com.aacharya.timetablemanagement.dto.UserRequestDTO;
 import com.aacharya.timetablemanagement.dto.UserResponseDTO;
-import com.aacharya.timetablemanagement.entity.User;
 import com.aacharya.timetablemanagement.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +23,10 @@ public class AuthController {
     // Register User → Create new user
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> registerUser(
-            @RequestBody User user) {
-
-        User registeredUser =
-                authService.registerUser(user);
+         @Valid @RequestBody UserRequestDTO userRequest) {
 
         UserResponseDTO response =
-                new UserResponseDTO(
-                        registeredUser.getUserId(),
-                        registeredUser.getUsername(),
-                        registeredUser.getRole()
-                );
+                authService.registerUser(userRequest);
 
         return new ResponseEntity<>(
                 response,
@@ -42,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(
-            @RequestBody LoginRequestDTO loginRequest) {
+         @Valid   @RequestBody LoginRequestDTO loginRequest) {
 
         // Login → Authenticate user and generate JWT
         String token = authService.loginUser(loginRequest);

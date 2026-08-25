@@ -2,6 +2,9 @@ package com.aacharya.timetablemanagement.service;
 
 
 import com.aacharya.timetablemanagement.dto.LoginRequestDTO;
+import com.aacharya.timetablemanagement.dto.UserRequestDTO;
+import com.aacharya.timetablemanagement.dto.UserResponseDTO;
+import com.aacharya.timetablemanagement.entity.Role;
 import com.aacharya.timetablemanagement.entity.User;
 import com.aacharya.timetablemanagement.exception.ConflictException;
 import com.aacharya.timetablemanagement.repository.UserRepository;
@@ -33,29 +36,41 @@ public class AuthService {
 
 
     // User Registration -> Handles registration logic
-    public User registerUser(User user) {
+    public UserResponseDTO registerUser(UserRequestDTO userRequest) {
 
-        // Check User → Find username in database
+
         User existingUser = userRepository
-                .findByUsername(user.getUsername())
+                .findByUsername(userRequest.getUsername())
                 .orElse(null);
 
-
-        // Duplicate Check → Prevent duplicate username
         if (existingUser != null) {
             throw new ConflictException(
                     "Username already exists"
             );
         }
 
-        // Encode Password → Secure password using BCrypt
-        String encodedPassword =
-                passwordEncoder.encode(user.getPassword());
 
-        // Set Password → Replace plain password with hash
-        user.setPassword(encodedPassword);
+        User user = new User();
 
-        return userRepository.save(user);
+        user.setUsername(userRequest.getUsername());
+
+        // Encode password using BCrypt
+        user.setPassword(
+                passwordEncoder.encode(userRequest.getPassword())
+        );
+
+        // Registration through public API creates STUDENT
+        user.setRole(Role.STUDENT);
+
+
+        User savedUser = userRepository.save(user);
+
+        // Return safe response DTO
+        return new UserResponseDTO(
+                savedUser.getUserId(),
+                savedUser.getUsername(),
+                savedUser.getRole()
+        );
     }
 
     // User Login → Verify username and password
