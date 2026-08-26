@@ -29,7 +29,7 @@ public class Subject {
     }
 
     public void setSubjectCode(String subjectCode) {
-        subjectCode = subjectCode;
+        this.subjectCode=subjectCode;
     }
 
     public Integer getCredits() {

@@ -38,7 +38,8 @@ public class SubjectController {
     })
 
 @PostMapping
-public ResponseEntity<SubjectResponseDTO> saveSubject(@RequestBody SubjectRequestDTO requestDTO){
+public ResponseEntity<SubjectResponseDTO> saveSubject(
+        @Valid @RequestBody SubjectRequestDTO requestDTO){
 
     //Subject savedSubject = subjectService.save(subject);
         SubjectResponseDTO response = subjectService.save(requestDTO);
