@@ -70,15 +70,29 @@ public class TeacherService {
     }
 
     public List<TeacherResponseDTO> getAllTeachers() {
+
         logger.info("Fetching all teachers");
 
         List<Teacher> teachers = teacherRepository.findAll();
+
         List<TeacherResponseDTO> responseList = new ArrayList<>();
+
         for (Teacher teacher : teachers) {
 
             TeacherResponseDTO response = new TeacherResponseDTO();
 
+            response.setTeacherId(teacher.getTeacherId());
+            response.setTeacherName(teacher.getName());
+            response.setEmail(teacher.getEmail());
+            response.setPhone(teacher.getPhone());
+            response.setQualification(teacher.getQualification());
+            response.setSpecialization(teacher.getSpecialization());
 
+            if (teacher.getBatch() != null) {
+                response.setBatchName(
+                        teacher.getBatch().getBatchName()
+                );
+            }
 
             responseList.add(response);
         }
@@ -201,13 +215,13 @@ public class TeacherService {
         logger.info("Teacher updated successfully: {}", savedTeacher.getTeacherId());
         TeacherResponseDTO response = new TeacherResponseDTO();
 
-//        response.setTeacherId(savedTeacher.getTeacherId());
-//        response.setTeacherName(savedTeacher.getName());
-//        response.setEmail(savedTeacher.getEmail());
-//        response.setPhone(savedTeacher.getPhone());
-//        response.setQualification(savedTeacher.getQualification());
-//        response.setSpecialization(savedTeacher.getSpecialization());
-//        response.setBatchName(savedTeacher.getBatch().getBatchName());
+        response.setTeacherId(savedTeacher.getTeacherId());
+        response.setTeacherName(savedTeacher.getName());
+        response.setEmail(savedTeacher.getEmail());
+        response.setPhone(savedTeacher.getPhone());
+        response.setQualification(savedTeacher.getQualification());
+        response.setSpecialization(savedTeacher.getSpecialization());
+        response.setBatchName(savedTeacher.getBatch().getBatchName());
 
         return response;
 
