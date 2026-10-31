@@ -1,10 +1,9 @@
-package com.aacharya.timetablemanagement.service;
 
+package com.aacharya.timetablemanagement.service;
 
 import com.aacharya.timetablemanagement.dto.LoginRequestDTO;
 import com.aacharya.timetablemanagement.dto.UserRequestDTO;
 import com.aacharya.timetablemanagement.dto.UserResponseDTO;
-import com.aacharya.timetablemanagement.entity.Role;
 import com.aacharya.timetablemanagement.entity.User;
 import com.aacharya.timetablemanagement.exception.ConflictException;
 import com.aacharya.timetablemanagement.repository.UserRepository;
@@ -15,12 +14,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    // Constructor Injection → Inject required dependencies
+    // Constructor Injection
     public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
@@ -29,16 +29,14 @@ public class AuthService {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager=authenticationManager;
-        this.jwtService=jwtService;
-
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
+    // ADMIN-controlled User Creation
+    public UserResponseDTO createUser(UserRequestDTO userRequest) {
 
-    // User Registration -> Handles registration logic
-    public UserResponseDTO registerUser(UserRequestDTO userRequest) {
-
-
+        // Check whether username already exists
         User existingUser = userRepository
                 .findByUsername(userRequest.getUsername())
                 .orElse(null);
@@ -49,7 +47,6 @@ public class AuthService {
             );
         }
 
-
         User user = new User();
 
         user.setUsername(userRequest.getUsername());
@@ -59,9 +56,8 @@ public class AuthService {
                 passwordEncoder.encode(userRequest.getPassword())
         );
 
-        // Registration through public API creates STUDENT
-        user.setRole(Role.STUDENT);
-
+        // Assign the role selected by ADMIN
+        user.setRole(userRequest.getRole());
 
         User savedUser = userRepository.save(user);
 
@@ -74,21 +70,20 @@ public class AuthService {
     }
 
     // User Login → Verify username and password
-    public String loginUser(LoginRequestDTO loginRequest){
+    public String loginUser(LoginRequestDTO loginRequest) {
 
-        // Authentication Token → Store login credentials
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
                         loginRequest.getPassword()
                 );
 
-        // Authenticate User → Verify credentials
+        // Authenticate user
         authenticationManager.authenticate(authenticationToken);
 
+        // Generate JWT
         return jwtService.generateToken(
                 loginRequest.getUsername()
         );
     }
-
 }

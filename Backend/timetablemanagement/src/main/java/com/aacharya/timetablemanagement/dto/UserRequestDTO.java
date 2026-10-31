@@ -1,6 +1,10 @@
+
 package com.aacharya.timetablemanagement.dto;
 
+import com.aacharya.timetablemanagement.entity.Role;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 
 public class UserRequestDTO {
 
@@ -10,12 +14,16 @@ public class UserRequestDTO {
     @NotBlank(message = "Password is required")
     private String password;
 
-    public UserRequestDTO(){ }
 
-    public UserRequestDTO(String username , String password){
-        this.password=password;
-        this.username= username;
+    @NotNull(message = "Role is required")
+    private Role role;
 
+    public UserRequestDTO() {
+    }
+
+    public UserRequestDTO(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -32,5 +40,13 @@ public class UserRequestDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

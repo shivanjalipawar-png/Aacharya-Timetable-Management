@@ -94,12 +94,29 @@ public class PasswordConfig {
                                 // ================= PUBLIC APIs =================
 
                                 .requestMatchers(
-                                        "/api/auth/**",
+                                        HttpMethod.POST, "/api/auth/login"
+                                )
+                                .permitAll()
+
+                                .requestMatchers(
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/error"
                                 )
                                 .permitAll()
+
+                                // ================= USER MANAGEMENT =================
+
+                                   // ADMIN only → Create User
+                                .requestMatchers(HttpMethod.POST, "/api/users")
+                                .hasRole("ADMIN")
+
+                                     // ADMIN / TEACHER / STUDENT → Read User
+                                .requestMatchers(HttpMethod.GET, "/api/users/**")
+                                .hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+
+
 
 
                                 // ================= BATCH =================
