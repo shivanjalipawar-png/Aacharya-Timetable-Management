@@ -1,0 +1,385 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* ===========================
+   ACHARYA ACADEMY LOGIN PAGE
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#faf8f5;
+}
+
+/* Main Container */
+
+.login-container{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+   /* background:linear-gradient(135deg,#faf8f5,#f5f0eb);*/
+   background: #f5f3f0;
+
+}
+
+/* Login Card */
+
+.login-card{
+
+    width:430px;
+
+    background:#ffffff;
+
+    border-radius:20px;
+
+    padding:45px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+    border-top:6px solid #9f0015;
+
+    transition:.3s;
+}
+
+.login-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+/* Logo */
+
+.logo-circle{
+
+    width:90px;
+
+    height:90px;
+
+    margin:auto;
+
+    margin-bottom:25px;
+
+    border-radius:50%;
+
+    background:#9f0015;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:32px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+}
+/* Logo-2 */
+
+.logo-circle img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 50%;
+    display: block;
+}
+
+/* Heading */
+
+.login-card h1{
+
+    text-align:center;
+
+    color:#9f0015;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+    line-height:1.3;
+
+}
+
+.login-card h2{
+
+    text-align:center;
+
+    color:#caa24d;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    margin-bottom:12px;
+
+}
+
+/* Welcome */
+
+.welcome{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:35px;
+
+    line-height:1.6;
+
+    font-size:14px;
+
+}
+
+/* Labels */
+
+.login-card form > label {
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: #444;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* Inputs */
+
+.login-card input[type=email],
+.login-card input[type=password],
+.login-card input[type=text]{
+
+    width:100%;
+
+    height:50px;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    padding:0 15px;
+
+    margin-bottom:20px;
+
+    font-size:15px;
+
+    transition:.3s;
+
+    background:#fff;
+
+}
+
+.login-card input:focus{
+
+    outline:none;
+
+    border-color:#9f0015;
+
+    box-shadow:0 0 0 3px rgba(159,0,21,.12);
+
+}
+
+/* Password */
+.password-container{
+    position:relative;
+}
+
+.password-container input{
+    padding-right:45px;
+}
+
+.show-password {
+    position: absolute;
+    right: 12px;
+    top: 15px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: #9f0015;
+    cursor: pointer;
+    padding: 0;
+}
+/* Remember */
+
+.extra{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:28px;
+
+    font-size:14px;
+
+}
+/* forget password handling*/
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 12px !important;
+    color: #555;
+    cursor: pointer;
+    user-select: none;
+    line-height: 16px;
+    position: relative;
+    top: -1px;
+}
+
+.remember input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0 4px 0 0 !important;
+    padding: 0;
+    accent-color: #9f0015;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.extra a{
+
+    color:#9f0015;
+
+    text-decoration:none;
+
+    font-weight:500;
+
+}
+
+.extra a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* Button */
+
+.login-btn{
+
+    width:100%;
+
+    height:52px;
+
+    background:#9f0015;
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.login-btn:hover{
+
+    background:#7d0010;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(159,0,21,.25);
+
+}
+
+/* Footer */
+
+.footer{
+
+    margin-top:30px;
+
+    text-align:center;
+
+    color:#888;
+
+    font-size:13px;
+
+}
+
+/* Responsive */
+
+@media(max-width:600px){
+
+.login-container{
+
+padding:20px;
+
+}
+
+.login-card{
+
+width:100%;
+
+padding:30px 25px;
+
+}
+
+.logo-circle {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: transparent;
+    border-radius: 0;
+}
+
+.logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.login-card h1{
+
+font-size:22px;
+
+}
+
+.login-card h2{
+
+font-size:16px;
+
+}
+
+.extra{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:12px;
+
+}
+
+}

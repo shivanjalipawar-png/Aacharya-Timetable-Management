@@ -1,0 +1,1479 @@
+/* ==========================================
+   FACULTY MANAGEMENT
+   1729 ACHARYA ACADEMY
+========================================== */
+
+.teachers-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #faf8f5;
+}
+
+.teachers-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.teachers-main {
+    padding: 35px;
+}
+
+
+/* ==========================================
+   PAGE HEADER
+========================================== */
+
+.teachers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    margin-bottom: 28px;
+}
+
+.teachers-header h1 {
+    color: #9f0015;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.teachers-header p {
+    color: #707070;
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   ADD FACULTY BUTTON
+========================================== */
+
+.add-teacher-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 20px;
+
+    background: #9f0015;
+    color: #ffffff;
+
+    border: none;
+    border-radius: 11px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+
+    white-space: nowrap;
+}
+
+.add-teacher-btn:hover {
+    background: #7c0010;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 7px 18px rgba(159, 0, 21, 0.2);
+}
+
+
+/* ==========================================
+   SUMMARY CARDS
+========================================== */
+
+.teacher-summary {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.teacher-summary-card {
+    background: #ffffff;
+
+    border: 1px solid #eee8e3;
+
+    border-radius: 15px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.05);
+
+    transition: 0.25s ease;
+}
+
+.teacher-summary-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.teacher-summary-card > svg {
+    width: 45px;
+    height: 45px;
+
+    padding: 11px;
+
+    color: #9f0015;
+
+    background: #f9eeee;
+
+    border-radius: 12px;
+}
+
+.teacher-summary-card div {
+    display: flex;
+    flex-direction: column;
+}
+
+.teacher-summary-card span {
+    color: #777777;
+
+    font-size: 13px;
+}
+
+.teacher-summary-card strong {
+    color: #9f0015;
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+/* ==========================================
+   SEARCH + FILTER
+========================================== */
+
+.teacher-controls {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+}
+
+.teacher-search {
+    flex: 1;
+
+    max-width: 430px;
+
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 15px;
+
+    background: #ffffff;
+
+    border: 1px solid #e7e1dc;
+
+    border-radius: 11px;
+
+    transition: 0.2s ease;
+}
+
+.teacher-search:focus-within {
+    border-color: #9f0015;
+
+    box-shadow: 0 0 0 3px rgba(159, 0, 21, 0.08);
+}
+
+.teacher-search svg {
+    color: #888888;
+}
+
+.teacher-search input {
+    flex: 1;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #333333;
+
+    font-size: 14px;
+}
+
+.teacher-search input::placeholder {
+    color: #aaaaaa;
+}
+
+.teacher-controls select {
+    min-width: 180px;
+
+    height: 46px;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+
+    color: #444444;
+
+    border: 1px solid #e7e1dc;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+.teacher-controls select:focus {
+    border-color: #9f0015;
+
+    box-shadow: 0 0 0 3px rgba(159, 0, 21, 0.08);
+}
+
+
+/* ==========================================
+   TABLE CONTAINER
+========================================== */
+
+.teacher-table-container {
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #eee8e3;
+
+    border-radius: 16px;
+
+    overflow-x: auto;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.teacher-table {
+    width: 100%;
+
+    min-width: 900px;
+
+    border-collapse: collapse;
+}
+
+.teacher-table thead {
+    background: #9f0015;
+}
+
+.teacher-table th {
+    padding: 16px 18px;
+
+    color: #ffffff;
+
+    text-align: left;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.2px;
+}
+
+.teacher-table td {
+    padding: 18px;
+
+    border-bottom: 1px solid #f0ece8;
+
+    vertical-align: middle;
+
+    color: #444444;
+
+    font-size: 14px;
+}
+
+.teacher-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.teacher-table tbody tr:hover {
+    background: #fcfaf8;
+}
+
+.teacher-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ==========================================
+   FACULTY NAME
+========================================== */
+
+.faculty-name-cell {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.faculty-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f6e9e9;
+
+    color: #9f0015;
+
+    border-radius: 50%;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.faculty-name-cell strong {
+    display: block;
+
+    color: #333333;
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+}
+
+.faculty-name-cell span {
+    display: block;
+
+    color: #999999;
+
+    font-size: 12px;
+}
+
+
+/* ==========================================
+   SUBJECT BADGE
+========================================== */
+
+.subject-badge {
+    display: inline-block;
+
+    padding: 6px 11px;
+
+    color: #9f0015;
+
+    background: #f8eded;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   ASSIGNED BATCHES
+========================================== */
+
+.batch-list {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+}
+
+.batch-list span {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    background: #faf6ed;
+
+    color: #795d22;
+
+    border: 1px solid #eee0bd;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+
+    font-weight: 500;
+}
+
+
+/* ==========================================
+   STATUS
+========================================== */
+
+.teacher-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.teacher-status.available {
+    color: #207a45;
+
+    background: #eaf7ef;
+}
+
+.teacher-status.in-class {
+    color: #a86709;
+
+    background: #fff4df;
+}
+
+.teacher-status.on-leave {
+    color: #a63b3b;
+
+    background: #fdecec;
+}
+
+
+/* ==========================================
+   FREE / DOUBT SLOT
+========================================== */
+
+.free-slot {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #555555;
+
+    white-space: nowrap;
+}
+
+.free-slot svg {
+    color: #caa24d;
+}
+
+.free-slot span {
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   EMPTY SEARCH RESULT
+========================================== */
+
+.no-teachers {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    color: #888888;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1000px) {
+
+    .teachers-main {
+        padding: 25px;
+    }
+
+    .teacher-summary {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .teachers-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .teacher-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .teacher-controls {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .teacher-search {
+        max-width: none;
+    }
+
+    .teacher-controls select {
+        width: 100%;
+    }
+
+    .add-teacher-btn {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .teachers-main {
+        padding: 18px;
+    }
+
+    .teachers-header h1 {
+        font-size: 24px;
+    }
+
+    .teacher-summary-card {
+        padding: 16px;
+    }
+}
+/* ==========================================
+   ADD FACULTY MODAL
+========================================== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(30, 20, 20, 0.55);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+
+    backdrop-filter: blur(3px);
+}
+
+
+/* Modal Box */
+
+.faculty-modal {
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 28px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+    animation: modalOpen 0.2s ease;
+}
+
+
+@keyframes modalOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ==========================================
+   MODAL HEADER
+========================================== */
+
+.modal-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding-bottom: 18px;
+
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid #eee8e3;
+}
+
+
+.modal-header h2 {
+    color: #9f0015;
+
+    font-size: 23px;
+
+    font-weight: 700;
+
+    margin-bottom: 4px;
+}
+
+
+.modal-header p {
+    color: #888888;
+
+    font-size: 13px;
+}
+
+
+/* Close Button */
+
+.modal-close {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #faf8f5;
+
+    color: #666666;
+
+    border: none;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.modal-close:hover {
+    background: #f7e9e9;
+
+    color: #9f0015;
+}
+
+
+/* ==========================================
+   FORM
+========================================== */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+
+.form-group > label {
+    display: block;
+
+    color: #444444;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+
+/* Inputs and Select */
+
+.form-group > input,
+.form-group > select {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 13px;
+
+    background: #ffffff;
+
+    color: #333333;
+
+    border: 1px solid #ded8d3;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+
+.form-group > input:focus,
+.form-group > select:focus {
+    border-color: #9f0015;
+
+    box-shadow: 0 0 0 3px rgba(159, 0, 21, 0.08);
+}
+
+
+.form-group input::placeholder {
+    color: #aaaaaa;
+}
+
+
+/* ==========================================
+   BATCH CHECKBOXES
+========================================== */
+
+.batch-checkbox-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 9px;
+}
+
+
+.batch-checkbox {
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px 11px;
+
+    background: #faf8f5;
+
+    border: 1px solid #eee8e3;
+
+    border-radius: 9px;
+
+    color: #555555;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.batch-checkbox:hover {
+    border-color: #caa24d;
+
+    background: #fdfaf3;
+}
+
+
+.batch-checkbox input {
+    width: 16px;
+    height: 16px;
+
+    accent-color: #9f0015;
+
+    cursor: pointer;
+}
+
+
+.batch-checkbox:has(input:checked) {
+    background: #f9eeee;
+
+    border-color: #9f0015;
+
+    color: #9f0015;
+
+    font-weight: 500;
+}
+
+
+/* ==========================================
+   MODAL BUTTONS
+========================================== */
+
+.modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding-top: 20px;
+
+    margin-top: 5px;
+
+    border-top: 1px solid #eee8e3;
+}
+
+
+.cancel-btn,
+.save-faculty-btn {
+    min-width: 115px;
+
+    height: 43px;
+
+    padding: 0 18px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+/* Cancel */
+
+.cancel-btn {
+    background: #ffffff;
+
+    color: #555555;
+
+    border: 1px solid #ded8d3;
+}
+
+
+.cancel-btn:hover {
+    background: #f5f3f1;
+}
+
+
+/* Save */
+
+.save-faculty-btn {
+    background: #9f0015;
+
+    color: #ffffff;
+
+    border: 1px solid #9f0015;
+}
+
+
+.save-faculty-btn:hover {
+    background: #7c0010;
+
+    border-color: #7c0010;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 15px rgba(159, 0, 21, 0.18);
+}
+
+
+/* ==========================================
+   MODAL SCROLLBAR
+========================================== */
+
+.faculty-modal::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.faculty-modal::-webkit-scrollbar-thumb {
+    background: #d2cbc5;
+
+    border-radius: 20px;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .modal-overlay {
+        padding: 12px;
+    }
+
+    .faculty-modal {
+        padding: 22px 18px;
+
+        border-radius: 14px;
+    }
+
+    .batch-checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-btn,
+    .save-faculty-btn {
+        width: 100%;
+    }
+}
+/* ==========================================
+   FACULTY AVAILABILITY BUTTON
+========================================== */
+
+.availability-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 9px 13px;
+
+  background: #fff7f7;
+  color: #9f0015;
+
+  border: 1px solid #ead2d5;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition: 0.2s ease;
+}
+
+.availability-btn:hover {
+  background: #9f0015;
+  color: #ffffff;
+
+  border-color: #9f0015;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 5px 12px rgba(159, 0, 21, 0.15);
+}
+
+
+/* ==========================================
+   AVAILABILITY MODAL OVERLAY
+========================================== */
+
+.availability-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1200;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 25px;
+
+  background: rgba(35, 25, 25, 0.58);
+
+  backdrop-filter: blur(3px);
+}
+
+
+/* ==========================================
+   AVAILABILITY MODAL
+========================================== */
+
+.availability-modal {
+  width: 100%;
+  max-width: 950px;
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  padding: 28px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+
+  animation: availabilityOpen 0.2s ease;
+}
+
+@keyframes availabilityOpen {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* ==========================================
+   MODAL HEADER
+========================================== */
+
+.availability-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 20px;
+
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+
+  border-bottom: 1px solid #eee8e3;
+}
+
+.availability-modal-header h2 {
+  margin: 0 0 5px;
+
+  color: #9f0015;
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.availability-modal-header p {
+  margin: 0 0 5px;
+
+  color: #555555;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.availability-modal-header small {
+  color: #8b8580;
+
+  font-size: 12px;
+}
+
+
+/* CLOSE BUTTON */
+
+.availability-modal-header > button {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  background: #faf8f5;
+  color: #666666;
+
+  border: none;
+  border-radius: 9px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.availability-modal-header > button:hover {
+  background: #f8e9eb;
+  color: #9f0015;
+}
+
+
+/* ==========================================
+   LEGEND
+========================================== */
+
+.availability-legend {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 22px;
+}
+
+.availability-legend span {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 7px 11px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* FREE LEGEND */
+
+.legend-free {
+  background: #edf8f0;
+  color: #26733b;
+
+  border: 1px solid #cce9d3;
+}
+
+
+/* BUSY LEGEND */
+
+.legend-busy {
+  background: #fbecee;
+  color: #9f0015;
+
+  border: 1px solid #efcdd2;
+}
+
+
+/* ==========================================
+   DAYS
+========================================== */
+
+.availability-days {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.availability-day {
+  padding: 18px;
+
+  background: #fcfaf8;
+
+  border: 1px solid #eee8e3;
+  border-radius: 14px;
+}
+
+.availability-day h3 {
+  margin: 0 0 14px;
+
+  color: #3e3935;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+/* ==========================================
+   TIME SLOT GRID
+========================================== */
+
+.availability-slots {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(170px, 1fr));
+
+  gap: 10px;
+}
+
+
+/* ==========================================
+   INDIVIDUAL SLOT
+========================================== */
+
+.availability-slot {
+  min-height: 88px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  transition: 0.2s ease;
+}
+
+.availability-slot strong {
+  font-size: 11px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+.availability-slot span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.availability-slot small {
+  font-size: 10px;
+
+  opacity: 0.8;
+}
+
+
+/* ==========================================
+   FREE SLOT
+========================================== */
+
+.availability-slot.free-slot {
+  background: #f1f9f3;
+
+  color: #26733b;
+
+  border: 1px solid #d1ead7;
+}
+
+.availability-slot.free-slot:hover {
+  background: #e8f5eb;
+
+  border-color: #a9d8b4;
+
+  transform: translateY(-1px);
+}
+
+
+/* ==========================================
+   BUSY / TEACHING SLOT
+========================================== */
+
+.availability-slot.busy-slot {
+  background: #fbeff0;
+
+  color: #8f1021;
+
+  border: 1px solid #efd0d4;
+}
+
+.availability-slot.busy-slot:hover {
+  background: #f8e6e8;
+
+  border-color: #dfb6bc;
+
+  transform: translateY(-1px);
+}
+
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.availability-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.availability-modal::-webkit-scrollbar-thumb {
+  background: #d3ccc6;
+
+  border-radius: 20px;
+}
+
+
+/* ==========================================
+   TABLE RESPONSIVENESS
+========================================== */
+
+.teacher-table-container {
+  overflow-x: auto;
+}
+
+
+/* ==========================================
+   TABLE AVAILABILITY COLUMN
+========================================== */
+
+.teacher-table td:last-child,
+.teacher-table th:last-child {
+  white-space: nowrap;
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 900px) {
+  .availability-modal {
+    max-width: 95%;
+  }
+
+  .availability-slots {
+    grid-template-columns:
+      repeat(2, minmax(150px, 1fr));
+  }
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+  .availability-modal-overlay {
+    padding: 10px;
+  }
+
+  .availability-modal {
+    max-width: 100%;
+
+    max-height: 94vh;
+
+    padding: 20px 15px;
+
+    border-radius: 14px;
+  }
+
+  .availability-modal-header h2 {
+    font-size: 20px;
+  }
+
+  .availability-legend {
+    flex-wrap: wrap;
+  }
+
+  .availability-day {
+    padding: 14px;
+  }
+
+  .availability-slots {
+    grid-template-columns: 1fr;
+  }
+
+  .availability-slot {
+    min-height: 76px;
+  }
+
+  .availability-btn {
+    padding: 8px 10px;
+
+    font-size: 11px;
+  }
+}
+/* ==========================================
+   DOUBT SESSION
+========================================== */
+
+.legend-doubt {
+  background: #fff7df;
+  color: #8a6518;
+  border: 1px solid #ead9a4;
+}
+
+.availability-slot.doubt-slot {
+  background: #fff8e7;
+  color: #795b18;
+  border: 1px solid #ead59a;
+}
+
+.doubt-session-label {
+  color: #795b18;
+  font-weight: 700;
+}
+
+
+/* ==========================================
+   MARK DOUBT BUTTON
+========================================== */
+
+.mark-doubt-btn {
+  margin-top: 5px;
+  padding: 6px 8px;
+
+  background: #ffffff;
+  color: #26733b;
+
+  border: 1px solid #b9ddc2;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.mark-doubt-btn:hover {
+  background: #26733b;
+  color: #ffffff;
+  border-color: #26733b;
+}
+
+
+/* ==========================================
+   REMOVE DOUBT BUTTON
+========================================== */
+
+.remove-doubt-btn {
+  margin-top: 5px;
+  padding: 6px 8px;
+
+  background: #ffffff;
+  color: #9f0015;
+
+  border: 1px solid #e0bdc2;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.remove-doubt-btn:hover {
+  background: #9f0015;
+  color: #ffffff;
+  border-color: #9f0015;
+}
