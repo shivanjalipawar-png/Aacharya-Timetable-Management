@@ -1,9 +1,10 @@
+
 package com.aacharya.timetablemanagement.entity;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -16,12 +17,22 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
-    public User(){}
+    // One teacher login account is linked to one teacher record
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id", unique = true)
+    private Teacher teacher;
+
+    // Multiple student accounts can belong to the same batch
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "batch_id")
+    private Batch batch;
+
+    public User() {
+    }
 
     public User(String username, String password, Role role) {
         this.username = username;
@@ -59,5 +70,21 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public Batch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(Batch batch) {
+        this.batch = batch;
     }
 }

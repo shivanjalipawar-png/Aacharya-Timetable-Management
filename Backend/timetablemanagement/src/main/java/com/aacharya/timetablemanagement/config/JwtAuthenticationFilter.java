@@ -1,7 +1,10 @@
+
 package com.aacharya.timetablemanagement.config;
 
 import com.aacharya.timetablemanagement.service.CustomUserDetailsService;
 import com.aacharya.timetablemanagement.service.JwtService;
+
+import io.jsonwebtoken.JwtException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import org.springframework.stereotype.Component;
@@ -44,67 +48,65 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 2. Check whether Bearer token exists
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 3. Remove "Bearer " from token
+        // 3. Extract JWT
         String jwt = authHeader.substring(7);
+
+        if (jwt.isBlank()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         try {
 
-            // 4. Extract username from JWT
-            String username = jwtService.extractUsername(jwt);
+            // 4. Check whether authentication already exists
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            // 5. Check whether user is already authenticated
-            if (username != null &&
-                    SecurityContextHolder.getContext().getAuthentication() == null) {
+                // 5. Extract username
+                String username = jwtService.extractUsername(jwt);
 
-                // 6. Load user from database
-                UserDetails userDetails =
-                        userDetailsService.loadUserByUsername(username);
+                if (username != null) {
 
-                // 7. Validate JWT
-                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    // 6. Load user from database
+                    UserDetails userDetails =
+                            userDetailsService.loadUserByUsername(username);
 
-                    // Debug: check authenticated user and role
-                    System.out.println("Authenticated user: "
-                            + userDetails.getUsername());
+                    // 7. Validate JWT
+                    if (jwtService.isTokenValid(jwt, userDetails)) {
 
-                    System.out.println("Authorities: "
-                            + userDetails.getAuthorities());
+                        // 8. Create authentication object
+                        UsernamePasswordAuthenticationToken authentication =
+                                new UsernamePasswordAuthenticationToken(
+                                        userDetails,
+                                        null,
+                                        userDetails.getAuthorities()
+                                );
 
-                    // 8. Create authentication object
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    userDetails.getAuthorities()
-                            );
+                        // 9. Attach request details
+                        authentication.setDetails(
+                                new WebAuthenticationDetailsSource()
+                                        .buildDetails(request)
+                        );
 
-                    // 9. Attach request details
-                    authentication.setDetails(
-                            new WebAuthenticationDetailsSource()
-                                    .buildDetails(request)
-                    );
-
-                    // 10. Tell Spring Security that user is authenticated
-                    SecurityContextHolder
-                            .getContext()
-                            .setAuthentication(authentication);
+                        // 10. Set authentication in Spring Security
+                        SecurityContextHolder.getContext()
+                                .setAuthentication(authentication);
+                    }
                 }
             }
 
-        } catch (Exception e) {
+        } catch (JwtException | IllegalArgumentException |
+                 UsernameNotFoundException e) {
 
-            // Invalid or expired JWT
-            System.out.println(
-                    "JWT validation failed: " + e.getMessage()
-            );
+            // Invalid, expired or unrecognized user token.
+            // Continue without authenticating the user.
+            SecurityContextHolder.clearContext();
         }
 
-        // Continue request
+        // 11. Continue request
         filterChain.doFilter(request, response);
     }
 }

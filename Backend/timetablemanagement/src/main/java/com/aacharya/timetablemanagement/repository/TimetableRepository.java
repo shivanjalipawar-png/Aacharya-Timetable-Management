@@ -2,6 +2,8 @@ package com.aacharya.timetablemanagement.repository;
 
 
 import com.aacharya.timetablemanagement.entity.Timetable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,9 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long>{
     List<Timetable> findByTeacher_TeacherId(Long teacherId);
 
     List<Timetable> findByBatch_BatchId(Long batchId);
+    Page<Timetable> findByTeacher_TeacherId(Long teacherId, Pageable pageable);
+
+    Page<Timetable> findByBatch_BatchId(Long batchId, Pageable pageable);
 
     List<Timetable> findBySubject_SubjectId(Long subjectId);
 
