@@ -15,9 +15,8 @@
     display: flex;
     flex-direction: column;
 }
-
 .teachers-main {
-    padding: 35px;
+    padding: 0;
 }
 
 

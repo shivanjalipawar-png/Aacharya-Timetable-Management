@@ -9,7 +9,7 @@ import Timetable from "./pages/Timetable";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 import Students from "./pages/Students";
-//import Settings from "./pages/Settings";
+import Settings from "./pages/Settings";
 
 import AdminLayout from "./layouts/AdminLayout";
 
@@ -83,6 +83,14 @@ function App() {
             </AdminLayout>
           }
         />
+        <Route
+  path="/settings"
+  element={
+    <AdminLayout>
+      <Settings />
+    </AdminLayout>
+  }
+/>
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />

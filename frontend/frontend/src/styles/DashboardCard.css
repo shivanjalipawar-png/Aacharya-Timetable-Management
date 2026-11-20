@@ -1,16 +1,16 @@
 .dashboard-card {
     position: relative;
-
     background: #ffffff;
-
     padding: 24px 25px;
+    min-height: 155px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     border-radius: 16px;
-
     border: 1px solid #eee8e3;
-
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-
     overflow: hidden;
 
     transition:

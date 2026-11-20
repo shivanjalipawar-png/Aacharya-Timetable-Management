@@ -1,5 +1,5 @@
 .management-main {
-  padding: 32px;
+  padding: 0;
   background: #faf8f5;
   min-height: calc(100vh - 75px);
   color: #292929;
@@ -213,9 +213,9 @@
 }
 
 @media (max-width: 900px) {
-  .management-main {
-    padding: 22px 16px;
-  }
+/* .management-main {
+  padding: 22px 16px;
+} */
 
   .management-heading {
     align-items: flex-start;
