@@ -26,10 +26,14 @@ public class User {
     @JoinColumn(name = "teacher_id", unique = true)
     private Teacher teacher;
 
-    // Multiple student accounts can belong to the same batch
+    // Existing batch relationship (kept temporarily)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "batch_id")
     private Batch batch;
+
+    // One login account is linked to one student profile
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Student student;
 
     public User() {
     }
@@ -86,5 +90,13 @@ public class User {
 
     public void setBatch(Batch batch) {
         this.batch = batch;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }
