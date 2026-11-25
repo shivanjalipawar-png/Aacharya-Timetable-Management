@@ -238,6 +238,34 @@ public class PasswordConfig {
                                 "/api/timetables/**"
                         ).hasRole("ADMIN")
 
+                                // STUDENT MANAGEMENT
+
+                              // ADMIN only: Create student
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/students",
+                                        "/api/students/**"
+                                ).hasRole("ADMIN")
+
+                      // ADMIN only: View student records
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/students",
+                                        "/api/students/**"
+                                ).hasRole("ADMIN")
+
+                        // ADMIN only: Update student
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/students/**"
+                        ).hasRole("ADMIN")
+
+
+                        // ADMIN only: Delete student
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/students/**"
+                        ).hasRole("ADMIN")
 
                         // READ PERMISSIONS
 
