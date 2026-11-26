@@ -1,16 +1,19 @@
+
 package com.aacharya.timetablemanagement.dto;
 
 public class SubjectResponseDTO {
+
     private String subjectName;
     private Integer credits;
     private String batchName;
     private Long subjectId;
     private String subjectCode;
-
+    private String teacherName;
 
     public String getSubjectName() {
         return subjectName;
     }
+
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
     }
@@ -18,6 +21,7 @@ public class SubjectResponseDTO {
     public Integer getCredits() {
         return credits;
     }
+
     public void setCredits(Integer credits) {
         this.credits = credits;
     }
@@ -25,6 +29,7 @@ public class SubjectResponseDTO {
     public String getBatchName() {
         return batchName;
     }
+
     public void setBatchName(String batchName) {
         this.batchName = batchName;
     }
@@ -32,6 +37,7 @@ public class SubjectResponseDTO {
     public Long getSubjectId() {
         return subjectId;
     }
+
     public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
@@ -39,7 +45,16 @@ public class SubjectResponseDTO {
     public String getSubjectCode() {
         return subjectCode;
     }
+
     public void setSubjectCode(String subjectCode) {
         this.subjectCode = subjectCode;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 }

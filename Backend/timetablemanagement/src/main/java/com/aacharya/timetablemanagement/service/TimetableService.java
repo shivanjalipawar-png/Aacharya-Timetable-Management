@@ -40,9 +40,6 @@ public class TimetableService {
     @Autowired
     private TimetableRepository timetableRepository;
 
-    private static final Logger logger =
-            LoggerFactory.getLogger(TimetableService.class);
-
     @Autowired
     private TeacherRepository teacherRepository;
 
@@ -54,6 +51,9 @@ public class TimetableService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(TimetableService.class);
 
 
     // =========================
@@ -100,9 +100,7 @@ public class TimetableService {
         timetable.setSubject(subject);
 
 
-        // =====================
         // Teacher Conflict Check
-        // =====================
 
         logger.info("Checking teacher conflict...");
 
@@ -126,9 +124,7 @@ public class TimetableService {
         }
 
 
-        // =====================
         // Batch Conflict Check
-        // =====================
 
         logger.info("Checking Batch conflict...");
 
@@ -148,9 +144,7 @@ public class TimetableService {
         }
 
 
-        // =====================
         // Classroom Conflict Check
-        // =====================
 
         logger.info("Checking classroom conflict...");
 
@@ -171,9 +165,7 @@ public class TimetableService {
         }
 
 
-        // =====================
         // Save Timetable
-        // =====================
 
         logger.info("Saving timetable for batch: {}", batch.getBatchName());
 
@@ -297,7 +289,6 @@ public class TimetableService {
     // DYNAMIC FILTERING
     // =========================
 
-
     public List<TimetableResponseDTO> getFilteredTimetables(
             Long teacherId,
             Long batchId,
@@ -308,9 +299,6 @@ public class TimetableService {
         logger.info(
                 "Filtering timetables for teacherId, batchId, day, subjectId and classroom: {}-{}-{}-{}-{}",
                 teacherId, batchId, day, subjectId, classroom);
-
-        // First restrict records to the logged-in user's access.
-        // Then apply the optional filters supplied in the request.
 
         List<Timetable> timetables = getAccessibleTimetables()
                 .stream()
@@ -358,7 +346,6 @@ public class TimetableService {
 
         return responses;
     }
-
 
 
     // =========================
@@ -412,7 +399,7 @@ public class TimetableService {
         logger.info("Fetching timetables for subject id: {}", subjectId);
 
         List<Timetable> timetables = getAccessibleTimetables().stream()
-                .filter(t -> t.getSubject().getSubjectId()==subjectId)
+                .filter(t -> t.getSubject().getSubjectId() == subjectId)
                 .toList();
 
         if (timetables.isEmpty()) {
@@ -930,12 +917,9 @@ public class TimetableService {
 
         if (currentUser.getRole() == Role.ADMIN) {
 
-            // ADMIN can access all timetables.
             return timetableRepository.findAll();
 
         } else if (currentUser.getRole() == Role.TEACHER) {
-
-            // TEACHER can access only their own timetable.
 
             if (currentUser.getTeacher() == null) {
                 throw new AccessDeniedException(
@@ -947,15 +931,15 @@ public class TimetableService {
 
         } else if (currentUser.getRole() == Role.STUDENT) {
 
-            // STUDENT can access only their own batch timetable.
+            if (currentUser.getStudent() == null
+                    || currentUser.getStudent().getBatch() == null) {
 
-            if (currentUser.getBatch() == null) {
                 throw new AccessDeniedException(
                         "Student account is not linked to a batch");
             }
 
             return timetableRepository.findByBatch_BatchId(
-                    currentUser.getBatch().getBatchId());
+                    currentUser.getStudent().getBatch().getBatchId());
         }
 
         throw new AccessDeniedException("Access denied");
@@ -977,12 +961,16 @@ public class TimetableService {
             throw new AccessDeniedException("User is not authenticated");
         }
 
-        return userRepository.findWithTeacherAndBatchByUsername(
+        return userRepository.findWithTeacherAndStudentByUsername(
                 authentication.getName()
         ).orElseThrow(() ->
                 new AccessDeniedException("User account not found"));
     }
 
+
+    // =========================
+    // GET CURRENT TEACHER ID
+    // =========================
 
     private Long getCurrentTeacherId() {
 
@@ -997,16 +985,23 @@ public class TimetableService {
     }
 
 
+    // =========================
+    // GET CURRENT BATCH ID
+    // =========================
+
     private Long getCurrentBatchId() {
 
         User user = getCurrentUser();
 
-        if (user.getRole() != Role.STUDENT || user.getBatch() == null) {
+        if (user.getRole() != Role.STUDENT
+                || user.getStudent() == null
+                || user.getStudent().getBatch() == null) {
+
             throw new AccessDeniedException(
                     "Student account is not linked to a batch");
         }
 
-        return user.getBatch().getBatchId();
+        return user.getStudent().getBatch().getBatchId();
     }
 
 }

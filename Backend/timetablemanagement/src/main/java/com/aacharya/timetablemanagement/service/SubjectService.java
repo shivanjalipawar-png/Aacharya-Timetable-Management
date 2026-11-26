@@ -1,52 +1,74 @@
+
 package com.aacharya.timetablemanagement.service;
+
 import com.aacharya.timetablemanagement.dto.SubjectRequestDTO;
 import com.aacharya.timetablemanagement.dto.SubjectResponseDTO;
 import com.aacharya.timetablemanagement.entity.Subject;
 import com.aacharya.timetablemanagement.entity.Teacher;
 import com.aacharya.timetablemanagement.exception.ResourceNotFoundException;
-import com.aacharya.timetablemanagement.repository.BatchRepository;
 import com.aacharya.timetablemanagement.repository.SubjectRepository;
 import com.aacharya.timetablemanagement.repository.TeacherRepository;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 @Service
 public class SubjectService {
+
     @Autowired
     private SubjectRepository subjectRepository;
 
     @Autowired
     private TeacherRepository teacherRepository;
+
     private static final Logger logger =
             LoggerFactory.getLogger(SubjectService.class);
-    @Autowired
-    private BatchRepository batchRepository;
 
 
+    // Helper method to populate teacher and batch details
+    private void setTeacherDetails(
+            Subject subject,
+            SubjectResponseDTO response) {
+
+        if (subject.getTeacher() != null) {
+
+            response.setTeacherName(
+                    subject.getTeacher().getName()
+            );
+
+            if (subject.getTeacher().getBatch() != null) {
+
+                response.setBatchName(
+                        subject.getTeacher().getBatch().getBatchName()
+                );
+            }
+        }
+    }
+
+    // Create Subject
     public SubjectResponseDTO save(SubjectRequestDTO requestDTO) {
 
-         Subject subject = new Subject();
+        Subject subject = new Subject();
 
-         subject.setSubjectName(requestDTO.getSubjectName());
+        subject.setSubjectName(requestDTO.getSubjectName());
         subject.setSubjectCode(requestDTO.getSubjectCode());
         subject.setCredits(requestDTO.getCredits());
 
-        //Batch batch = batchRepository.findById(requestDTO.getTeacherId()).orElse(null);
         Long teacherId = requestDTO.getTeacherId();
 
-        Teacher teacher = teacherRepository.findById(teacherId).orElse(null);
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElse(null);
 
         if (teacher == null) {
-            throw new ResourceNotFoundException("Teacher not found with id: " + teacherId);
+            throw new ResourceNotFoundException(
+                    "Teacher not found with id: " + teacherId
+            );
         }
 
         subject.setTeacher(teacher);
@@ -55,86 +77,86 @@ public class SubjectService {
 
         Subject savedSubject = subjectRepository.save(subject);
 
-        logger.info("Subject created successfully: {}", savedSubject.getSubjectName());
+        logger.info(
+                "Subject created successfully: {}",
+                savedSubject.getSubjectName()
+        );
 
-        SubjectResponseDTO response= new SubjectResponseDTO();
+        SubjectResponseDTO response = new SubjectResponseDTO();
 
         response.setSubjectName(savedSubject.getSubjectName());
         response.setSubjectCode(savedSubject.getSubjectCode());
         response.setCredits(savedSubject.getCredits());
         response.setSubjectId(savedSubject.getSubjectId());
-      //  response.setBatchName(savedSubject.getBatchName());
 
-        if(subject.getTeacher().getBatch() != null){
-            response.setBatchName(subject.getTeacher().getBatch().getBatchName());
-        }
-         return response;
+        setTeacherDetails(savedSubject, response);
+
+        return response;
     }
 
 
-
-
+    // Get Subject By ID
     public SubjectResponseDTO getSubjectById(Long id) {
+
         logger.info("Fetching subject with id: {}", id);
-        Subject subject = subjectRepository.findById(id).orElse(null);
+
+        Subject subject = subjectRepository.findById(id)
+                .orElse(null);
 
         if (subject == null) {
-            throw new ResourceNotFoundException("Subject not found with id: " + id);
+            throw new ResourceNotFoundException(
+                    "Subject not found with id: " + id
+            );
         }
 
         logger.info("Retrieved subject: {}", subject.getSubjectName());
 
-        SubjectResponseDTO response= new SubjectResponseDTO();
-
+        SubjectResponseDTO response = new SubjectResponseDTO();
 
         response.setSubjectName(subject.getSubjectName());
         response.setSubjectCode(subject.getSubjectCode());
         response.setCredits(subject.getCredits());
         response.setSubjectId(subject.getSubjectId());
-      //  response.setBatchName(subject.getBatchName());
 
-        if (subject.getTeacher() != null &&
-                subject.getTeacher().getBatch() != null) {
+        setTeacherDetails(subject, response);
 
-            response.setBatchName(
-                    subject.getTeacher().getBatch().getBatchName()
-            );
-        }
         return response;
     }
 
 
-
+    // Get All Subjects
     public List<SubjectResponseDTO> getAllSubjects() {
 
         logger.info("Fetching all subjects");
 
         List<Subject> subjects = subjectRepository.findAll();
-        List<SubjectResponseDTO> responseList= new ArrayList<>();
 
-        for(Subject subject:subjects){
+        List<SubjectResponseDTO> responseList = new ArrayList<>();
 
-            SubjectResponseDTO response= new SubjectResponseDTO();
+        for (Subject subject : subjects) {
+
+            SubjectResponseDTO response = new SubjectResponseDTO();
+
             response.setSubjectName(subject.getSubjectName());
             response.setSubjectCode(subject.getSubjectCode());
             response.setCredits(subject.getCredits());
             response.setSubjectId(subject.getSubjectId());
-            if (subject.getTeacher() != null &&
-                    subject.getTeacher().getBatch() != null) {
 
-                response.setBatchName(
-                        subject.getTeacher().getBatch().getBatchName()
-                );
-            }
-         responseList.add(response);
+            setTeacherDetails(subject, response);
+
+            responseList.add(response);
         }
+
         logger.info("Retrieved {} subjects", subjects.size());
 
         return responseList;
-
     }
-    //==== Filtering Methods =====
-    //Get subject by name
+
+
+    // ================= Filtering Methods =================
+
+
+    // Get Subject By Name
     public List<SubjectResponseDTO> getSubjectByName(String subjectName) {
 
         logger.info("Fetching subjects with name: {}", subjectName);
@@ -161,15 +183,7 @@ public class SubjectService {
             response.setSubjectCode(subject.getSubjectCode());
             response.setCredits(subject.getCredits());
 
-            if (subject.getTeacher() != null &&
-                    subject.getTeacher().getBatch() != null) {
-
-                response.setBatchName(
-                        subject.getTeacher()
-                                .getBatch()
-                                .getBatchName()
-                );
-            }
+            setTeacherDetails(subject, response);
 
             responseList.add(response);
         }
@@ -182,8 +196,11 @@ public class SubjectService {
 
         return responseList;
     }
-    //get subject by subjectCode
-    public List<SubjectResponseDTO> getSubjectBySubjectCode(String subjectCode) {
+
+
+    // Get Subject By Subject Code
+    public List<SubjectResponseDTO> getSubjectBySubjectCode(
+            String subjectCode) {
 
         logger.info("Fetching subjects with code: {}", subjectCode);
 
@@ -209,15 +226,7 @@ public class SubjectService {
             response.setSubjectCode(subject.getSubjectCode());
             response.setCredits(subject.getCredits());
 
-            if (subject.getTeacher() != null &&
-                    subject.getTeacher().getBatch() != null) {
-
-                response.setBatchName(
-                        subject.getTeacher()
-                                .getBatch()
-                                .getBatchName()
-                );
-            }
+            setTeacherDetails(subject, response);
 
             responseList.add(response);
         }
@@ -231,92 +240,88 @@ public class SubjectService {
         return responseList;
     }
 
-// ----- Dynamic Filtering -----
 
-public List<SubjectResponseDTO> getFilteredSubjects(
-        String subjectName,
-        String subjectCode,
-        Integer credits,
-        Long teacherId) {
+    // ================= Dynamic Filtering =================
 
-    logger.info(
-            "Fetching subjects with filters: name={}, code={}, credits={}, teacherId={}",
-            subjectName,
-            subjectCode,
-            credits,
-            teacherId
-    );
+    public List<SubjectResponseDTO> getFilteredSubjects(
+            String subjectName,
+            String subjectCode,
+            Integer credits,
+            Long teacherId) {
 
-    // Fetch subjects using dynamic filters
-    List<Subject> subjects = subjectRepository.filterSubjects(
-            subjectName,
-            subjectCode,
-            credits,
-            teacherId
-    );
-
-    logger.info("Records found: {}", subjects.size());
-
-    // No subjects found
-    if (subjects.isEmpty()) {
-        throw new ResourceNotFoundException(
-                "No subject found for the specified filters."
+        logger.info(
+                "Fetching subjects with filters: name={}, code={}, credits={}, teacherId={}",
+                subjectName,
+                subjectCode,
+                credits,
+                teacherId
         );
-    }
 
-    // Entity -> DTO
-    List<SubjectResponseDTO> responseList = new ArrayList<>();
+        List<Subject> subjects = subjectRepository.filterSubjects(
+                subjectName,
+                subjectCode,
+                credits,
+                teacherId
+        );
 
-    for (Subject subject : subjects) {
+        logger.info("Records found: {}", subjects.size());
 
-        SubjectResponseDTO response = new SubjectResponseDTO();
-
-        response.setSubjectId(subject.getSubjectId());
-        response.setSubjectName(subject.getSubjectName());
-        response.setSubjectCode(subject.getSubjectCode());
-        response.setCredits(subject.getCredits());
-
-        // Get batch name through Teacher -> Batch
-        if (subject.getTeacher() != null &&
-                subject.getTeacher().getBatch() != null) {
-
-            response.setBatchName(
-                    subject.getTeacher()
-                            .getBatch()
-                            .getBatchName()
+        if (subjects.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No subject found for the specified filters."
             );
         }
 
-        responseList.add(response);
+        List<SubjectResponseDTO> responseList = new ArrayList<>();
+
+        for (Subject subject : subjects) {
+
+            SubjectResponseDTO response = new SubjectResponseDTO();
+
+            response.setSubjectId(subject.getSubjectId());
+            response.setSubjectName(subject.getSubjectName());
+            response.setSubjectCode(subject.getSubjectCode());
+            response.setCredits(subject.getCredits());
+
+            setTeacherDetails(subject, response);
+
+            responseList.add(response);
+        }
+
+        logger.info(
+                "Found {} subject(s) matching the filters.",
+                responseList.size()
+        );
+
+        return responseList;
     }
 
-    logger.info(
-            "Found {} subject(s) matching the filters.",
-            responseList.size()
-    );
 
-    return responseList;
-}
+    // ================= Update Subject =================
 
+    public SubjectResponseDTO updateSubject(
+            Long subjectId,
+            SubjectRequestDTO requestDTO) {
 
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElse(null);
 
-
-
-    public SubjectResponseDTO updateSubject(Long subjectId, SubjectRequestDTO requestDTO) {
-
-        Subject subject = subjectRepository.findById(subjectId).orElse(null);
-
-        if(subject == null){
-            throw new ResourceNotFoundException("Subject not found with id: " + subjectId);
+        if (subject == null) {
+            throw new ResourceNotFoundException(
+                    "Subject not found with id: " + subjectId
+            );
         }
-        //Batch batch = batchRepository.findById(requestDTO.getBatchId(batchId)).orElse(null);
+
         Long teacherId = requestDTO.getTeacherId();
 
-        Teacher teacher = teacherRepository.findById(teacherId).orElse(null);
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElse(null);
 
-            if (teacher == null) {
-                throw new ResourceNotFoundException("Teacher not found with id: " + teacherId);
-            }
+        if (teacher == null) {
+            throw new ResourceNotFoundException(
+                    "Teacher not found with id: " + teacherId
+            );
+        }
 
         subject.setSubjectName(requestDTO.getSubjectName());
         subject.setSubjectCode(requestDTO.getSubjectCode());
@@ -327,34 +332,45 @@ public List<SubjectResponseDTO> getFilteredSubjects(
 
         Subject updatedSubject = subjectRepository.save(subject);
 
-        logger.info("Subject updated successfully: {}", updatedSubject.getSubjectName());
+        logger.info(
+                "Subject updated successfully: {}",
+                updatedSubject.getSubjectName()
+        );
 
-          SubjectResponseDTO response = new SubjectResponseDTO();
+        SubjectResponseDTO response = new SubjectResponseDTO();
 
+        response.setSubjectName(updatedSubject.getSubjectName());
+        response.setSubjectCode(updatedSubject.getSubjectCode());
+        response.setCredits(updatedSubject.getCredits());
+        response.setSubjectId(updatedSubject.getSubjectId());
 
-        response.setSubjectName(subject.getSubjectName());
-        response.setSubjectCode(subject.getSubjectCode());
-        response.setCredits(subject.getCredits());
-        response.setSubjectId(subject.getSubjectId());
-      //  response.setBatchName(subject.getBatchName());
-   subject.setTeacher(teacher);
+        setTeacherDetails(updatedSubject, response);
+
         return response;
-
-
     }
 
 
-public void deleteSubject(Long id)
-{
-    Subject subject = subjectRepository.findById(id).orElse(null);
-    if(subject == null){
-        throw new ResourceNotFoundException("Subject not found with id: " + id);
+    // ================= Delete Subject =================
+
+    public void deleteSubject(Long id) {
+
+        Subject subject = subjectRepository.findById(id)
+                .orElse(null);
+
+        if (subject == null) {
+            throw new ResourceNotFoundException(
+                    "Subject not found with id: " + id
+            );
+        }
+
+        logger.info("Deleting subject: {}", subject.getSubjectName());
+
+        subjectRepository.delete(subject);
+
+        logger.info(
+                "Subject deleted successfully: {}",
+                subject.getSubjectName()
+        );
     }
-    logger.info("Deleting subject: {}", subject.getSubjectName());
-    subjectRepository.delete(subject);
-    logger.info("Subject deleted successfully: {}", subject.getSubjectName());
-
-
-}
 
 }

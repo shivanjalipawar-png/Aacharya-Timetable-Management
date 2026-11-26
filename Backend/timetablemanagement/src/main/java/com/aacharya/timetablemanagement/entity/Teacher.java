@@ -1,6 +1,6 @@
+
 package com.aacharya.timetablemanagement.entity;
 
-import com.aacharya.timetablemanagement.entity.Batch;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +15,10 @@ public class Teacher {
     private String phone;
     private String qualification;
     private String specialization;
+
+    // New fields
+    private String status;
+    private String freeSlot;
 
     @ManyToOne
     @JoinColumn(name = "batch_id")
@@ -66,6 +70,22 @@ public class Teacher {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getFreeSlot() {
+        return freeSlot;
+    }
+
+    public void setFreeSlot(String freeSlot) {
+        this.freeSlot = freeSlot;
     }
 
     public Batch getBatch() {

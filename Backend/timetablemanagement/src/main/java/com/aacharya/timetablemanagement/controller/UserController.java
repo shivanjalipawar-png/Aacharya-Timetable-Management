@@ -3,8 +3,10 @@ package com.aacharya.timetablemanagement.controller;
 
 import com.aacharya.timetablemanagement.dto.UserRequestDTO;
 import com.aacharya.timetablemanagement.dto.UserResponseDTO;
+import com.aacharya.timetablemanagement.entity.Role;
 import com.aacharya.timetablemanagement.repository.UserRepository;
 import com.aacharya.timetablemanagement.service.AuthService;
+
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +54,12 @@ public class UserController {
                 response,
                 HttpStatus.CREATED
         );
+    }
+
+    // Get total number of students
+    @GetMapping("/students/count")
+    public Long getStudentCount() {
+
+        return userRepository.countByRole(Role.STUDENT);
     }
 }

@@ -38,6 +38,8 @@ public class TeacherService {
         teacher.setPhone(requestDTO.getPhone());
         teacher.setQualification(requestDTO.getQualification());
         teacher.setSpecialization(requestDTO.getSpecialization());
+        teacher.setStatus(requestDTO.getStatus());
+        teacher.setFreeSlot(requestDTO.getFreeSlot());
 
         Long batchId = requestDTO.getBatchId();
 
@@ -65,6 +67,8 @@ public class TeacherService {
         response.setQualification(savedTeacher.getQualification());
         response.setSpecialization(savedTeacher.getSpecialization());
         response.setBatchName(savedTeacher.getBatch().getBatchName());
+        response.setStatus(savedTeacher.getStatus());
+        response.setFreeSlot(savedTeacher.getFreeSlot());
 
         return response;
     }
@@ -87,10 +91,16 @@ public class TeacherService {
             response.setPhone(teacher.getPhone());
             response.setQualification(teacher.getQualification());
             response.setSpecialization(teacher.getSpecialization());
+            response.setStatus(teacher.getStatus());
+            response.setFreeSlot(teacher.getFreeSlot());
 
             if (teacher.getBatch() != null) {
                 response.setBatchName(
                         teacher.getBatch().getBatchName()
+                );
+
+                response.setBatchId(
+                        teacher.getBatch().getBatchId()
                 );
             }
 
@@ -119,6 +129,9 @@ public class TeacherService {
         response.setQualification(teacher.getQualification());
         response.setSpecialization(teacher.getSpecialization());
         response.setBatchName(teacher.getBatch().getBatchName());
+        response.setBatchId(teacher.getBatch().getBatchId());
+        response.setStatus(teacher.getStatus());
+        response.setFreeSlot(teacher.getFreeSlot());
 
         return response;
     }
@@ -159,6 +172,9 @@ public class TeacherService {
             dto.setPhone(teacher.getPhone());
             dto.setQualification(teacher.getQualification());
             dto.setSpecialization(teacher.getSpecialization());
+            dto.setStatus(teacher.getStatus());
+            dto.setFreeSlot(teacher.getFreeSlot());
+
             if (teacher.getBatch() != null) {
                 dto.setBatchName(teacher.getBatch().getBatchName());
             } else {
@@ -207,6 +223,8 @@ public class TeacherService {
         teacher.setQualification(requestDTO.getQualification());
         teacher.setSpecialization(requestDTO.getSpecialization());
         teacher.setBatch(batch);
+        teacher.setStatus(requestDTO.getStatus());
+        teacher.setFreeSlot(requestDTO.getFreeSlot());
 
         logger.info("Updating teacher: {}", teacher.getTeacherId());
 
@@ -222,6 +240,8 @@ public class TeacherService {
         response.setQualification(savedTeacher.getQualification());
         response.setSpecialization(savedTeacher.getSpecialization());
         response.setBatchName(savedTeacher.getBatch().getBatchName());
+        response.setStatus(savedTeacher.getStatus());
+        response.setFreeSlot(savedTeacher.getFreeSlot());
 
         return response;
 

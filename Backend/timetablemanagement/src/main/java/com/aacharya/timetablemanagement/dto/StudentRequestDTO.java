@@ -1,10 +1,7 @@
 
 package com.aacharya.timetablemanagement.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public class StudentRequestDTO {
 
@@ -17,7 +14,8 @@ public class StudentRequestDTO {
     private String email;
 
     @NotBlank(message = "Phone number is required")
-    @Size(min = 10, max = 10, message = "Phone number must contain exactly 10 digits")
+    @Pattern(regexp = "^[0-9]{10}$",
+            message = "Phone number must contain exactly 10 digits")
     private String phone;
 
     // Login account information
