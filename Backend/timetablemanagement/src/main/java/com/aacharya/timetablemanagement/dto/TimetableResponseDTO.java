@@ -20,6 +20,10 @@ public class TimetableResponseDTO {
 
     private String classroom;
 
+    private Long teacherId;
+    private Long batchId;
+    private Long subjectId;
+
     public DayOfWeek getDay() {
         return day;
     }
@@ -83,5 +87,29 @@ public class TimetableResponseDTO {
 
     public void setClassroom(String classroom) {
         this.classroom = classroom;
+    }
+
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public Long getBatchId() {
+        return batchId;
+    }
+
+    public void setBatchId(Long batchId) {
+        this.batchId = batchId;
+    }
+
+    public Long getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
     }
 }

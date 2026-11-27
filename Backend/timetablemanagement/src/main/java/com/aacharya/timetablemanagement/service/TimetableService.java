@@ -69,8 +69,15 @@ public class TimetableService {
         timetable.setEndTime(requestDTO.getEndTime());
         timetable.setDay(requestDTO.getDay());
 
-        Long batchId = requestDTO.getBatchId();
 
+        // Validate timetable time range
+        if (!requestDTO.getEndTime().isAfter(requestDTO.getStartTime())) {
+            throw new IllegalArgumentException(
+                    "End time must be after start time."
+            );
+        }
+
+        Long batchId = requestDTO.getBatchId();
         Batch batch = batchRepository.findById(batchId).orElse(null);
 
         if (batch == null) {
@@ -185,6 +192,10 @@ public class TimetableService {
         response.setSubjectName(savedTimetable.getSubject().getSubjectName());
         response.setClassroom(savedTimetable.getClassroom());
 
+        response.setTeacherId(savedTimetable.getTeacher().getTeacherId());
+        response.setBatchId(savedTimetable.getBatch().getBatchId());
+        response.setSubjectId(savedTimetable.getSubject().getSubjectId());
+
         return response;
     }
 
@@ -238,6 +249,10 @@ public class TimetableService {
             dto.setSubjectName(timetable.getSubject().getSubjectName());
             dto.setClassroom(timetable.getClassroom());
 
+            dto.setTeacherId(timetable.getTeacher().getTeacherId());
+            dto.setBatchId(timetable.getBatch().getBatchId());
+            dto.setSubjectId(timetable.getSubject().getSubjectId());
+
             return dto;
         });
     }
@@ -274,6 +289,10 @@ public class TimetableService {
             response.setBatchName(timetable.getBatch().getBatchName());
             response.setSubjectName(timetable.getSubject().getSubjectName());
             response.setClassroom(timetable.getClassroom());
+
+            response.setTeacherId(timetable.getTeacher().getTeacherId());
+            response.setBatchId(timetable.getBatch().getBatchId());
+            response.setSubjectId(timetable.getSubject().getSubjectId());
 
             responses.add(response);
         }
@@ -339,6 +358,10 @@ public class TimetableService {
             response.setSubjectName(timetable.getSubject().getSubjectName());
             response.setClassroom(timetable.getClassroom());
 
+            response.setTeacherId(timetable.getTeacher().getTeacherId());
+            response.setBatchId(timetable.getBatch().getBatchId());
+            response.setSubjectId(timetable.getSubject().getSubjectId());
+
             responses.add(response);
         }
 
@@ -379,6 +402,10 @@ public class TimetableService {
             response.setBatchName(timetable.getBatch().getBatchName());
             response.setSubjectName(timetable.getSubject().getSubjectName());
             response.setClassroom(timetable.getClassroom());
+
+            response.setTeacherId(timetable.getTeacher().getTeacherId());
+            response.setBatchId(timetable.getBatch().getBatchId());
+            response.setSubjectId(timetable.getSubject().getSubjectId());
 
             responses.add(response);
         }
@@ -422,6 +449,10 @@ public class TimetableService {
             response.setSubjectName(timetable.getSubject().getSubjectName());
             response.setClassroom(timetable.getClassroom());
 
+            response.setTeacherId(timetable.getTeacher().getTeacherId());
+            response.setBatchId(timetable.getBatch().getBatchId());
+            response.setSubjectId(timetable.getSubject().getSubjectId());
+
             responses.add(response);
         }
 
@@ -464,6 +495,11 @@ public class TimetableService {
         response.setSubjectName(timetable.getSubject().getSubjectName());
         response.setClassroom(timetable.getClassroom());
 
+        response.setTeacherId(timetable.getTeacher().getTeacherId());
+        response.setBatchId(timetable.getBatch().getBatchId());
+        response.setSubjectId(timetable.getSubject().getSubjectId());
+
+
         return response;
     }
 
@@ -499,6 +535,10 @@ public class TimetableService {
             dto.setSubjectName(timetable.getSubject().getSubjectName());
             dto.setTeacherName(timetable.getTeacher().getName());
             dto.setClassroom(timetable.getClassroom());
+
+            dto.setTeacherId(timetable.getTeacher().getTeacherId());
+            dto.setBatchId(timetable.getBatch().getBatchId());
+            dto.setSubjectId(timetable.getSubject().getSubjectId());
 
             response.add(dto);
         }
@@ -543,6 +583,10 @@ public class TimetableService {
             dto.setSubjectName(timetable.getSubject().getSubjectName());
             dto.setTeacherName(timetable.getTeacher().getName());
             dto.setClassroom(timetable.getClassroom());
+
+            dto.setTeacherId(timetable.getTeacher().getTeacherId());
+            dto.setBatchId(timetable.getBatch().getBatchId());
+            dto.setSubjectId(timetable.getSubject().getSubjectId());
 
             response.add(dto);
         }
@@ -591,6 +635,10 @@ public class TimetableService {
             response.setSubjectName(timetable.getSubject().getSubjectName());
             response.setClassroom(timetable.getClassroom());
 
+            response.setTeacherId(timetable.getTeacher().getTeacherId());
+            response.setBatchId(timetable.getBatch().getBatchId());
+            response.setSubjectId(timetable.getSubject().getSubjectId());
+
             responses.add(response);
         }
 
@@ -634,6 +682,10 @@ public class TimetableService {
             dto.setSubjectName(timetable.getSubject().getSubjectName());
             dto.setTeacherName(timetable.getTeacher().getName());
             dto.setClassroom(timetable.getClassroom());
+
+            dto.setTeacherId(timetable.getTeacher().getTeacherId());
+            dto.setBatchId(timetable.getBatch().getBatchId());
+            dto.setSubjectId(timetable.getSubject().getSubjectId());
 
             response.add(dto);
         }
@@ -682,6 +734,10 @@ public class TimetableService {
             dto.setTeacherName(timetable.getTeacher().getName());
             dto.setClassroom(timetable.getClassroom());
 
+            dto.setTeacherId(timetable.getTeacher().getTeacherId());
+            dto.setBatchId(timetable.getBatch().getBatchId());
+            dto.setSubjectId(timetable.getSubject().getSubjectId());
+
             response.add(dto);
         }
 
@@ -729,6 +785,10 @@ public class TimetableService {
             dto.setTeacherName(timetable.getTeacher().getName());
             dto.setClassroom(timetable.getClassroom());
 
+            dto.setTeacherId(timetable.getTeacher().getTeacherId());
+            dto.setBatchId(timetable.getBatch().getBatchId());
+            dto.setSubjectId(timetable.getSubject().getSubjectId());
+
             response.add(dto);
         }
 
@@ -756,6 +816,13 @@ public class TimetableService {
         timetable.setStartTime(requestDTO.getStartTime());
         timetable.setEndTime(requestDTO.getEndTime());
         timetable.setDay(requestDTO.getDay());
+
+        // Validate timetable time range
+        if (!requestDTO.getEndTime().isAfter(requestDTO.getStartTime())) {
+            throw new IllegalArgumentException(
+                    "End time must be after start time."
+            );
+        }
 
         Long teacherId = requestDTO.getTeacherId();
 
@@ -878,6 +945,10 @@ public class TimetableService {
         response.setBatchName(savedTimetable.getBatch().getBatchName());
         response.setSubjectName(savedTimetable.getSubject().getSubjectName());
         response.setClassroom(savedTimetable.getClassroom());
+
+        response.setTeacherId(savedTimetable.getTeacher().getTeacherId());
+        response.setBatchId(savedTimetable.getBatch().getBatchId());
+        response.setSubjectId(savedTimetable.getSubject().getSubjectId());
 
         return response;
     }
